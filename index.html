@@ -3,237 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reach Us - ConnectVerse</title>
+    <title>Starlight Reels Casino</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
-
-        :root {
-            --primary-color: #6a11cb;
-            --secondary-color: #2575fc;
-            --text-color: #333;
-            --bg-color: #f7f9fc;
-            --card-bg: #ffffff;
-            --border-color: #e0e0e0;
-            --input-border: #ccc;
-            --hover-color: #550bb0;
-            --success-color: #28a745;
-        }
-
+        /* General Body & Root Styles */
         html, body {
-            height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            height: 100%;
+            overflow: hidden; /* Prevent scrolling unless content explicitly overflows within a scrollable container */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a; /* Dark background */
+            color: #f0f0f0; /* Light text for contrast */
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--text-color);
-            overflow: auto; /* Ensure scrolling if content overflows */
+            font-size: 16px; /* Base font size */
         }
 
-        .contact-container {
-            background-color: var(--card-bg);
+        /* Casino Container */
+        .casino-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%; /* Occupy good width for desktop */
+            max-width: 900px; /* Max width to keep it centered and readable */
+            height: 90vh; /* Occupy most of the viewport height */
+            background-color: #2a2a2a; /* Slightly lighter dark for container */
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Deep shadow for premium feel */
+            padding: 2.5rem; /* Sufficient padding inside the container */
+            box-sizing: border-box; /* Include padding in width/height */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .casino-header {
             width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
-            text-align: center;
-            margin: 20px; /* Add margin for smaller screens/safety */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        h2 {
-            font-size: 2.2em;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-weight: 700;
+        .casino-header h1 {
+            font-size: 2.5rem;
+            color: #ffd700; /* Gold accent for branding */
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            letter-spacing: 0.05em;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            color: #555;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        textarea {
-            width: calc(100% - 24px); /* Adjust for padding */
-            padding: 12px;
-            border: 1px solid var(--input-border);
+        .balance-display {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #e0e0e0;
+            background-color: #3d3d3d;
+            padding: 0.8rem 1.5rem;
             border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        textarea:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
-            outline: none;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 14px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            width: auto;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
             min-width: 150px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        button:hover {
-            background-color: var(--hover-color);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        .balance-display span {
+            color: #32cd32; /* Lime green for positive balance */
+            margin-left: 0.5rem;
         }
 
-        button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        /* Main Game Area */
+        .game-area {
+            flex-grow: 1; /* Allows game area to take available space */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
         }
 
-        #statusMessage {
-            margin-top: 25px;
-            padding: 15px;
+        /* Slot Machine Section */
+        .slot-machine {
+            background-color: #383838;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 600px; /* Constrain slot machine width */
+        }
+
+        .reels {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .reel {
+            width: 100px;
+            height: 100px;
+            background-color: #1c1c1c;
+            border: 4px solid #444;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem; /* Size of the emoji symbols */
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            transition: transform 0.1s ease-out; /* For small visual feedback */
+        }
+
+        .message-display {
+            font-size: 1.4rem;
+            font-weight: 500;
+            height: 2.5rem; /* Fixed height to prevent layout shift */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #f0f0f0;
+            background-color: #4a4a4a;
+            padding: 0.8rem 1.5rem;
             border-radius: 8px;
-            font-weight: 600;
-            display: none; /* Hidden by default */
-            font-size: 1.05em;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: opacity 0.5s ease-in-out;
-            opacity: 0;
+            min-width: 300px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        #statusMessage.success {
-            background-color: #d4edda;
-            color: var(--success-color);
-            border: 1px solid #c3e6cb;
+        /* Controls Section */
+        .controls {
+            display: flex;
+            flex-direction: column; /* Stack bet selector and spin button */
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
         }
 
-        #statusMessage.error {
-            background-color: #f8d7da;
-            color: #dc3545;
-            border: 1px solid #f5c6cb;
+        .bet-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #e0e0e0;
         }
 
-        #statusMessage.show {
-            display: block;
-            opacity: 1;
+        .bet-button {
+            background-color: #555;
+            color: #f0f0f0;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            min-width: 70px;
+        }
+
+        .bet-button:hover:not(.active) {
+            background-color: #6a6a6a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .bet-button.active {
+            background-color: #00aaff; /* Highlight active bet */
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 170, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .spin-button {
+            background-color: #ffd700; /* Gold for spin button */
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .spin-button:hover:not(:disabled) {
+            background-color: #ffeb3b;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .spin-button:disabled {
+            background-color: #555;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: none;
+        }
+
+        /* Footer */
+        .casino-footer {
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    <div class="contact-container">
-        <h2>Reach Us at ConnectVerse</h2>
-        <form id="contactForm">
-            <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+    <div class="casino-container">
+        <header class="casino-header">
+            <h1>Starlight Reels Casino</h1>
+            <div class="balance-display">
+                Balance: $<span id="balance">1000</span>
             </div>
-            <div class="form-group">
-                <label for="email">Your Email</label>
-                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </header>
+
+        <main class="game-area">
+            <div class="slot-machine">
+                <div class="reels">
+                    <div class="reel" id="reel1">&#127826;</div> <!-- Cherry -->
+                    <div class="reel" id="reel2">&#127826;</div> <!-- Cherry -->
+                    <div class="reel" id="reel3">&#127826;</div> <!-- Cherry -->
+                </div>
+                <div class="message-display" id="message">Place your bet and spin!</div>
+                <div class="controls">
+                    <div class="bet-selector">
+                        <span>Bet:</span>
+                        <button class="bet-button active" data-bet="1">$1</button>
+                        <button class="bet-button" data-bet="5">$5</button>
+                        <button class="bet-button" data-bet="10">$10</button>
+                        <button class="bet-button" data-bet="25">$25</button>
+                    </div>
+                    <button class="spin-button" id="spinButton"><i class="fas fa-play"></i> Spin</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" placeholder="Briefly state your query" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
-            </div>
-            <button type="submit">Send Message</button>
-        </form>
-        <div id="statusMessage"></div>
+        </main>
+
+        <footer class="casino-footer">
+            <p>&copy; 2023 Starlight Reels. All rights reserved. Play Responsibly.</p>
+        </footer>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const contactForm = document.getElementById('contactForm');
-            const statusMessage = document.getElementById('statusMessage');
+        const symbols = ['&#127826;', '&#127819;', '&#127818;', '&#127815;', '&#128276;', '&#128142;', '&#127808;'];
+        // Emojis: Cherry, Lemon, Orange, Grapes, Bell, Diamond, Four Leaf Clover (Wild)
 
-            contactForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent actual form submission
+        const balanceElement = document.getElementById('balance');
+        const reel1 = document.getElementById('reel1');
+        const reel2 = document.getElementById('reel2');
+        const reel3 = document.getElementById('reel3');
+        const messageDisplay = document.getElementById('message');
+        const spinButton = document.getElementById('spinButton');
+        const betButtons = document.querySelectorAll('.bet-button');
 
-                // Get form data
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const subject = document.getElementById('subject').value.trim();
-                const message = document.getElementById('message').value.trim();
+        let balance = 1000;
+        let currentBet = 1; // Default bet
 
-                // Simple validation
-                if (!name || !email || !subject || !message) {
-                    displayStatus('Please fill in all fields.', 'error');
-                    return;
+        // Update balance display
+        const updateBalance = () => {
+            balanceElement.textContent = balance;
+            if (balance <= 0) {
+                messageDisplay.textContent = "Game Over! You're out of balance. Refresh to play again.";
+                spinButton.disabled = true;
+                betButtons.forEach(btn => btn.disabled = true);
+            }
+        };
+
+        // Handle bet selection
+        betButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                betButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentBet = parseInt(button.dataset.bet);
+                messageDisplay.textContent = `Bet set to $${currentBet}. Ready to spin!`;
+                if (balance < currentBet) {
+                    spinButton.disabled = true;
+                    messageDisplay.textContent = `Not enough balance for $${currentBet} bet. Please lower your bet.`;
+                } else {
+                    spinButton.disabled = false;
                 }
-
-                if (!validateEmail(email)) {
-                    displayStatus('Please enter a valid email address.', 'error');
-                    return;
-                }
-
-                // Simulate form submission
-                console.log('Form Submitted:');
-                console.log('Name:', name);
-                console.log('Email:', email);
-                console.log('Subject:', subject);
-                console.log('Message:', message);
-
-                // Display success message
-                displayStatus('Thank you for your message! We will get back to you soon.', 'success');
-
-                // Clear the form after a short delay
-                setTimeout(() => {
-                    contactForm.reset(); // Resets all form fields
-                    hideStatus();
-                }, 3000);
             });
+        });
 
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(String(email).toLowerCase());
-            }
+        // Spin reel animation function
+        const spinReel = (reelElement, finalSymbolIndex, duration, delay) => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    let startTime = Date.now();
+                    let interval = setInterval(() => {
+                        if (Date.now() - startTime < duration) {
+                            reelElement.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                        } else {
+                            clearInterval(interval);
+                            reelElement.innerHTML = symbols[finalSymbolIndex];
+                            resolve();
+                        }
+                    }, 80); // Fast symbol change interval
+                }, delay);
+            });
+        };
 
-            function displayStatus(message, type) {
-                statusMessage.textContent = message;
-                statusMessage.className = 'show ' + type; // Set class for styling and visibility
-                
-                // Automatically hide after some time if it's an error/success
-                if (type === 'success' || type === 'error') {
-                    setTimeout(hideStatus, 5000); // Hide after 5 seconds
+        // Check for win conditions
+        const checkWin = (resultIndexes) => {
+            const r1 = symbols[resultIndexes[0]];
+            const r2 = symbols[resultIndexes[1]];
+            const r3 = symbols[resultIndexes[2]];
+
+            let winnings = 0;
+            const wildSymbol = '&#127808;'; // Four Leaf Clover
+
+            // Helper to count non-wild identical symbols
+            const countNonWildMatches = (sym1, sym2, sym3) => {
+                const uniqueSymbols = new Set([sym1, sym2, sym3].filter(s => s !== wildSymbol));
+                if (uniqueSymbols.size === 1) { // Means all non-wild are same
+                    return true;
                 }
+                return false;
+            };
+
+            // Payout logic
+            if (r1 === r2 && r2 === r3) { // Three identical symbols
+                switch (r1) {
+                    case '&#128142;': winnings = currentBet * 10; break; // Diamond
+                    case '&#127808;': winnings = currentBet * 15; break; // Wild Clover (highest)
+                    case '&#128276;': winnings = currentBet * 8; break;  // Bell
+                    case '&#127826;': winnings = currentBet * 5; break;  // Cherry
+                    case '&#127815;': winnings = currentBet * 4; break;  // Grapes
+                    case '&#127818;': winnings = currentBet * 3; break;  // Orange
+                    case '&#127819;': winnings = currentBet * 2; break;  // Lemon
+                }
+                messageDisplay.textContent = `JACKPOT! Three ${r1} - You won $${winnings}!`;
+            } else if ([r1, r2, r3].filter(s => s === wildSymbol).length === 1) { // One wild card
+                // Check if the other two non-wild symbols are identical
+                const nonWildSymbols = [r1, r2, r3].filter(s => s !== wildSymbol);
+                if (nonWildSymbols.length === 2 && nonWildSymbols[0] === nonWildSymbols[1]) {
+                    winnings = currentBet * 2; // Two matching + wild
+                    messageDisplay.textContent = `Nice! Two matching symbols + Wild - You won $${winnings}!`;
+                }
+            } else if ([r1, r2, r3].filter(s => s === wildSymbol).length === 2) { // Two wild cards
+                 const nonWildSymbol = [r1, r2, r3].find(s => s !== wildSymbol);
+                 if (nonWildSymbol) { // Two wild + one other symbol
+                     winnings = currentBet * 5; // Good payout for two wilds
+                     messageDisplay.textContent = `Incredible! Two Wilds - You won $${winnings}!`;
+                 }
+            } else {
+                messageDisplay.textContent = `No win. Try again!`;
             }
 
-            function hideStatus() {
-                statusMessage.classList.remove('show');
-                statusMessage.classList.remove('success');
-                statusMessage.classList.remove('error');
+            balance += winnings;
+            updateBalance();
+        };
+
+        // Spin button handler
+        spinButton.addEventListener('click', async () => {
+            if (balance < currentBet) {
+                messageDisplay.textContent = `Not enough balance for a $${currentBet} bet!`;
+                spinButton.disabled = true;
+                return;
+            }
+
+            balance -= currentBet;
+            updateBalance();
+            messageDisplay.textContent = "Spinning...";
+            spinButton.disabled = true;
+            betButtons.forEach(btn => btn.disabled = true);
+
+            const results = [
+                Math.floor(Math.random() * symbols.length),
+                Math.floor(Math.random() * symbols.length),
+                Math.floor(Math.random() * symbols.length)
+            ];
+
+            // Stagger reel animations slightly
+            await Promise.all([
+                spinReel(reel1, results[0], 2000, 0),
+                spinReel(reel2, results[1], 2200, 100),
+                spinReel(reel3, results[2], 2400, 200)
+            ]);
+
+            checkWin(results);
+            spinButton.disabled = false;
+            betButtons.forEach(btn => btn.disabled = false);
+            if (balance < currentBet) { // Re-check if balance falls below current bet after spin
+                spinButton.disabled = true;
+                messageDisplay.textContent = `Not enough balance for $${currentBet} bet. Please lower your bet.`;
             }
         });
+
+        // Initial setup
+        updateBalance();
     </script>
 </body>
 </html>
