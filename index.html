@@ -3,872 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AetherCrash - The Ultimate Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0XfmVcWrHT8HySF9XjIR1+VEISrLutk+jQPrCpKRxorC7aqFILTERg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>CalcSphere - Simple Calculator</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
-
-        :root {
-            --bg-dark: #0A0A10;
-            --bg-medium: #151520;
-            --bg-light: #1F1F2F;
-            --purple-glow: #a700ff;
-            --purple-light: #d100ff;
-            --purple-medium: #8a00ff;
-            --purple-dark: #6a00c7;
-            --blue-accent: #00e1ff;
-            --magenta-accent: #ff00ea;
-            --cyan-accent: #00fffb;
-            --text-color: #e0e0e0;
-            --disabled-color: #555;
-            --glow-filter: drop-shadow(0 0 5px var(--purple-glow)) drop_shadow(0 0 15px var(--purple-glow));
-            --btn-glow-filter: drop-shadow(0 0 3px var(--purple-glow)) drop_shadow(0 0 10px var(--purple-glow));
-        }
-
-        * {
-            box-sizing: border-box;
+        /* General Reset & Page Setup */
+        body {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
-            background-color: var(--bg-dark);
-            color: var(--text-color);
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            font-size: 16px;
-        }
-
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            width: 100vw;
-            height: 100vh;
-            max-width: 1920px;
-            max-height: 1080px;
-            background-color: var(--bg-medium);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* --- Header: User Account Bar --- */
-        .header-bar {
-            width: 100%;
-            padding: 15px 30px;
-            background-color: var(--bg-light);
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(var(--purple-glow), 0.1);
-            z-index: 100;
+            min-height: 100vh;
+            background-color: #f0f2f5; /* Light grey background */
+            overflow: hidden; /* Prevent body scroll if content doesn't fill */
         }
 
-        .header-left, .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .branding {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--text-color);
-            text-shadow: 0 0 8px var(--purple-glow), 0 0 15px var(--purple-light);
-        }
-
-        .user-info, .user-balance {
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-
-        .user-balance span {
-            color: var(--purple-glow);
-            text-shadow: 0 0 5px var(--purple-glow), 0 0 10px var(--purple-light);
-            font-size: 1.3em;
-            margin-left: 5px;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .nav-icon {
-            font-size: 1.5em;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: color 0.2s, filter 0.2s;
-        }
-        .nav-icon:hover {
-            color: var(--purple-light);
-            filter: var(--glow-filter);
-        }
-
-        /* --- Main Content Area --- */
-        .main-content {
-            display: flex;
-            flex-grow: 1;
-            width: 100%;
-            height: calc(100% - 68px - 51px); /* Header + Footer height */
-            position: relative;
-        }
-
-        /* --- Sidebar: Live Activity Feed --- */
-        .sidebar {
-            width: 300px;
-            background-color: var(--bg-medium);
-            border-left: 1px solid rgba(var(--purple-glow), 0.1);
+        /* Calculator Container */
+        .calculator {
+            background-color: #2c2c2c; /* Dark charcoal */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 320px; /* Standard width for a simple calculator */
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            overflow-y: auto;
-            flex-shrink: 0;
+            gap: 15px; /* Spacing between display and buttons */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
         }
 
-        .sidebar h3 {
-            font-size: 1.4em;
-            color: var(--text-color);
-            text-shadow: 0 0 5px var(--purple-glow);
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(var(--purple-glow), 0.2);
+        /* Branding */
+        .brand {
+            color: #ccc;
+            font-size: 1.1em;
+            text-align: center;
             margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        .activity-feed-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 10px;
-            background-color: var(--bg-light);
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .activity-feed-item.cashed-out {
-            background-color: rgba(var(--purple-dark), 0.3);
-            border-left: 3px solid var(--purple-light);
-        }
-
-        .activity-feed-item span {
-            font-size: 0.95em;
-        }
-
-        .activity-feed-item .player-name {
-            font-weight: 600;
-            color: var(--blue-accent);
-        }
-
-        .activity-feed-item .bet-amount {
-            color: var(--text-color);
-        }
-
-        .activity-feed-item .cashout-multiplier {
-            font-weight: 700;
-            color: var(--purple-light);
-            text-shadow: 0 0 3px var(--purple-glow);
-        }
-
-        /* --- Game Area --- */
-        .game-area {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* Display */
+        .display {
+            background-color: #1a1a1a; /* Even darker for display */
+            color: #ffffff;
+            font-size: 3.5em; /* Large font for readability */
             padding: 20px;
-            gap: 20px;
-            overflow-y: auto;
-            width: calc(100% - 300px); /* Adjust for sidebar width */
-        }
-
-        /* Recent Results History */
-        .recent-results {
-            width: 80%;
-            max-width: 800px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: var(--bg-light);
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            text-align: right;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis; /* Handle long numbers */
+            min-height: 70px; /* Ensure display height */
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            border: 1px solid rgba(var(--purple-glow), 0.15);
-            overflow-x: auto; /* Enable horizontal scrolling if many results */
+            align-items: flex-end; /* Align text to bottom right */
+            justify-content: flex-end;
+            letter-spacing: 1px;
+            font-weight: 300; /* Lighter weight for modern look */
         }
 
-        .result-item {
-            flex-shrink: 0; /* Prevent items from shrinking */
-            padding: 5px 10px;
-            background-color: rgba(var(--purple-dark), 0.2);
-            border-radius: 4px;
-            font-size: 0.9em;
-            font-weight: 600;
-            color: var(--purple-light);
-            text-shadow: 0 0 3px var(--purple-glow);
-            transition: all 0.2s ease;
-        }
-        .result-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(var(--purple-glow), 0.3);
-        }
-
-        /* Central Game Display */
-        .game-display {
-            background-color: var(--bg-medium);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-            padding: 40px 60px;
-            text-align: center;
-            border: 2px solid rgba(var(--purple-glow), 0.2);
-            position: relative;
-            min-width: 500px;
-        }
-
-        .game-status {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--blue-accent);
-            text-shadow: 0 0 5px var(--blue-accent), 0 0 10px var(--cyan-accent);
-            transition: all 0.3s ease;
-        }
-
-        .multiplier-value {
-            font-size: 6em;
-            font-weight: 800;
-            color: var(--purple-light);
-            text-shadow: 0 0 10px var(--purple-glow), 0 0 30px var(--purple-light);
-            line-height: 1;
-            transition: text-shadow 0.1s ease-out;
-        }
-        .multiplier-value.crashed {
-            animation: crashGlow 0.5s ease-out forwards;
-        }
-        @keyframes crashGlow {
-            0% { text-shadow: 0 0 10px var(--purple-glow), 0 0 30px var(--purple-light); }
-            50% { text-shadow: 0 0 20px var(--magenta-accent), 0 0 60px var(--magenta-accent); transform: scale(1.05); }
-            100% { text-shadow: 0 0 10px var(--purple-glow), 0 0 30px var(--purple-light); transform: scale(1); }
-        }
-
-        .countdown {
-            font-size: 1.5em;
-            font-weight: 600;
-            color: var(--cyan-accent);
-            margin-top: 15px;
-            text-shadow: 0 0 5px var(--cyan-accent);
-        }
-
-        /* Betting Control Panel */
-        .bet-controls {
+        /* Buttons Grid */
+        .buttons-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            width: 80%;
-            max-width: 800px;
-            padding: 30px;
-            background-color: var(--bg-light);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(var(--purple-glow), 0.2);
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            gap: 12px; /* Spacing between buttons */
         }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-group label {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-color);
-            text-shadow: 0 0 3px var(--purple-glow);
-        }
-
-        .input-with-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .bet-input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            background-color: var(--bg-medium);
-            border: 1px solid rgba(var(--purple-glow), 0.3);
-            border-radius: 8px;
-            color: var(--text-color);
-            font-size: 1.2em;
-            font-weight: 600;
-            outline: none;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            text-align: center;
-        }
-        .bet-input:focus {
-            border-color: var(--purple-light);
-            box-shadow: inset 0 0 10px rgba(var(--purple-glow), 0.5);
-        }
-
-        .quick-bet-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            grid-column: 1 / -1;
-            justify-content: center;
-        }
-
-        .quick-bet-btn {
-            padding: 10px 15px;
-            background-color: rgba(var(--purple-dark), 0.3);
-            border: 1px solid var(--purple-dark);
-            border-radius: 8px;
-            color: var(--purple-light);
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s, filter 0.2s;
-            filter: var(--btn-glow-filter);
-        }
-        .quick-bet-btn:hover {
-            background-color: rgba(var(--purple-dark), 0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(var(--purple-glow), 0.3);
-        }
-        .quick-bet-btn:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-
-        .action-buttons {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .action-btn {
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.3em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out, filter 0.2s ease-in-out;
+        /* Button Styling */
+        .button {
+            background-color: #4a4a4a; /* Dark grey for numbers */
+            color: #ffffff;
+            font-size: 1.8em;
+            padding: 20px 0; /* Vertical padding only, width controlled by grid */
             border: none;
-            color: var(--text-color);
-            background-color: var(--purple-medium);
-            filter: var(--btn-glow-filter);
-            box-shadow: 0 0 10px rgba(var(--purple-glow), 0.5);
-        }
-
-        .action-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(var(--purple-glow), 0.6);
-            background-color: var(--purple-light);
-        }
-        .action-btn:active:not(:disabled) {
-            transform: translateY(0);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-            background-color: var(--purple-dark);
-        }
-
-        .action-btn:disabled {
-            background-color: var(--disabled-color);
-            color: #aaa;
-            cursor: not-allowed;
-            filter: none;
-            box-shadow: none;
-        }
-
-        .action-btn.place-bet { background-color: var(--purple-medium); }
-        .action-btn.cancel-bet { background-color: #8c208c; }
-        .action-btn.cash-out { background-color: var(--blue-accent); color: var(--bg-dark); text-shadow: none; filter: drop-shadow(0 0 3px var(--blue-accent)) drop_shadow(0 0 10px var(--blue-accent)); }
-        .action-btn.cash-out:hover:not(:disabled) { background-color: var(--cyan-accent); }
-        .action-btn.cash-out:active:not(:disabled) { background-color: var(--blue-accent); }
-
-        /* --- Notifications --- */
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(var(--purple-dark), 0.85);
-            border: 1px solid var(--purple-light);
-            color: var(--text-color);
-            padding: 15px 25px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: 600;
-            box-shadow: 0 0 15px rgba(var(--purple-glow), 0.7);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            z-index: 1000;
-            text-shadow: 0 0 5px var(--purple-glow);
-            text-align: center;
-        }
-        .notification.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* --- Fairness Display (Footer) --- */
-        .fairness-display {
-            width: 100%;
-            padding: 15px 30px;
-            background-color: var(--bg-light);
-            border-top: 1px solid rgba(var(--purple-glow), 0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 0.9em;
-            color: #aaa;
-            gap: 10px;
-            z-index: 100;
+            user-select: none; /* Prevent text selection */
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
         }
 
-        .fairness-display i {
-            color: var(--purple-light);
-            filter: var(--btn-glow-filter);
+        .button:hover {
+            background-color: #5a5a5a; /* Lighter hover */
         }
 
-        /* Keyframe Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .button:active {
+            transform: translateY(1px); /* Slight press effect */
+            box-shadow: 0 0 5px rgba(0,0,0,0.2) inset;
+        }
+
+        /* Specific Button Colors & Sizes */
+        .button.operator,
+        .button.equals {
+            background-color: #ff9500; /* Vibrant orange for operators */
+            color: #ffffff;
+            font-size: 2em; /* Slightly larger for emphasis */
+            font-weight: 500;
+        }
+        .button.operator:hover,
+        .button.equals:hover {
+            background-color: #ffad33; /* Lighter orange hover */
+        }
+
+        .button.clear,
+        .button.backspace {
+            background-color: #6a6a6a; /* Lighter grey for utility buttons */
+            color: #ffffff;
+            font-size: 1.6em; /* Slightly smaller for 'AC' and '⌫' */
+        }
+        .button.clear:hover,
+        .button.backspace:hover {
+            background-color: #7a7a7a;
+        }
+
+        /* Special Grid Spanning */
+        .button.zero {
+            grid-column: span 2; /* Make zero button span two columns */
+            text-align: left; /* Align '0' to the left within its merged cell */
+            padding-left: 30px; /* Add padding to push '0' left */
+            justify-content: flex-start; /* Ensure flex content aligns left */
+        }
+
+        /* Ensure equals button spans two rows */
+        .button.equals {
+            grid-row: span 2;
+            grid-column: 4 / 5; /* Starts at column 4, ends before column 5 */
+            height: auto; /* Allow auto height based on content */
+        }
+
+        /* Focus outline removal for accessibility, add custom one if needed */
+        .button:focus {
+            outline: none;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header: User Account Bar -->
-        <div class="header-bar">
-            <div class="header-left">
-                <div class="branding">AetherCrash</div>
-            </div>
-            <div class="header-right">
-                <div class="user-info">Hello, <span id="username">PlayerOne</span></div>
-                <div class="user-balance">Balance: <span id="account-balance">1000.00</span> G</div>
-                <i class="fas fa-wallet nav-icon" title="Wallet"></i>
-                <i class="fas fa-cog nav-icon" title="Settings"></i>
-            </div>
+    <div class="calculator">
+        <div class="brand">CalcSphere</div>
+        <div class="display" id="display">0</div>
+        <div class="buttons-grid">
+            <button class="button clear">AC</button>
+            <button class="button backspace">⌫</button>
+            <button class="button operator">/</button>
+            <button class="button operator">*</button>
+
+            <button class="button number">7</button>
+            <button class="button number">8</button>
+            <button class="button number">9</button>
+            <button class="button operator">-</button>
+
+            <button class="button number">4</button>
+            <button class="button number">5</button>
+            <button class="button number">6</button>
+            <button class="button operator">+</button>
+
+            <button class="button number">1</button>
+            <button class="button number">2</button>
+            <button class="button number">3</button>
+            <button class="button equals">=</button> <!-- This button will span 2 rows via CSS -->
+
+            <button class="button number zero">0</button> <!-- This button will span 2 columns via CSS -->
+            <button class="button number decimal">.</button>
         </div>
-
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <!-- Game Area -->
-            <div class="game-area">
-                <!-- Recent Results History -->
-                <div class="recent-results" id="recent-results">
-                    <!-- Results populated by JS -->
-                </div>
-
-                <!-- Central Game Display -->
-                <div class="game-display">
-                    <div class="game-status" id="game-status">Bets Open</div>
-                    <div class="multiplier-value" id="multiplier-value">1.00x</div>
-                    <div class="countdown" id="countdown"></div>
-                </div>
-
-                <!-- Betting Control Panel -->
-                <div class="bet-controls">
-                    <div class="input-group">
-                        <label for="bet-amount">Bet Amount (G)</label>
-                        <div class="input-with-actions">
-                            <input type="number" id="bet-amount" class="bet-input" value="10.00" min="0.01" step="0.01">
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="auto-cashout">Auto Cashout (X)</label>
-                        <div class="input-with-actions">
-                            <input type="number" id="auto-cashout" class="bet-input" value="2.00" min="1.01" step="0.01">
-                        </div>
-                    </div>
-                    <div class="quick-bet-buttons">
-                        <button class="quick-bet-btn" data-action="min">Min Bet</button>
-                        <button class="quick-bet-btn" data-action="half">1/2</button>
-                        <button class="quick-bet-btn" data-action="double">2x</button>
-                        <button class="quick-bet-btn" data-action="max">Max Bet</button>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="action-btn place-bet" id="place-bet-btn">Place Bet</button>
-                        <button class="action-btn cancel-bet" id="cancel-bet-btn" disabled>Cancel Bet</button>
-                        <button class="action-btn cash-out" id="cash-out-btn" disabled>Cash Out</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar: Live Game Activity Feed -->
-            <div class="sidebar">
-                <h3><i class="fas fa-users"></i> Live Activity</h3>
-                <div class="activity-feed" id="activity-feed">
-                    <!-- Activity items populated by JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Fairness Display -->
-        <div class="fairness-display">
-            <i class="fas fa-balance-scale-right"></i>
-            <span>Fairness: Server Seed: <span id="server-seed">xyz123</span> | Client Seed: <span id="client-seed">abc456</span></span>
-        </div>
-
-        <!-- Global Notification -->
-        <div class="notification" id="notification"></div>
     </div>
 
     <script>
-        const DOM = {
-            accountBalance: document.getElementById('account-balance'),
-            gameStatus: document.getElementById('game-status'),
-            multiplierValue: document.getElementById('multiplier-value'),
-            countdown: document.getElementById('countdown'),
-            betAmountInput: document.getElementById('bet-amount'),
-            autoCashoutInput: document.getElementById('auto-cashout'),
-            placeBetBtn: document.getElementById('place-bet-btn'),
-            cancelBetBtn: document.getElementById('cancel-bet-btn'),
-            cashOutBtn: document.getElementById('cash-out-btn'),
-            quickBetButtons: document.querySelectorAll('.quick-bet-btn'),
-            recentResults: document.getElementById('recent-results'),
-            activityFeed: document.getElementById('activity-feed'),
-            notification: document.getElementById('notification'),
-            serverSeed: document.getElementById('server-seed'),
-            clientSeed: document.getElementById('client-seed'),
-        };
+        const display = document.getElementById('display');
+        let currentInput = '0'; // Stores the number currently being input or the result
+        let previousInput = ''; // Stores the first operand for an operation
+        let operator = null;    // Stores the selected operator (+, -, *, /)
+        let waitingForNewInput = false; // Flag to indicate if the next digit pressed should start a new number
 
-        let state = {
-            balance: 1000.00,
-            currentBet: 0,
-            autoCashout: 0,
-            gameStatus: 'bets_open', // 'bets_open', 'in_progress', 'crashed'
-            currentMultiplier: 1.00,
-            crashPoint: 0,
-            recentCrashes: [],
-            playerBetPending: false,
-            playerInGame: false,
-            playerCashedOutAt: 0,
-            countdownTimer: null,
-            gameInterval: null,
-            notificationTimeout: null,
-            serverSeedValue: 'xyz123',
-            clientSeedValue: 'abc456',
-        };
+        /** Updates the display with the currentInput value. */
+        function updateDisplay() {
+            // Limit length for display aesthetics if it gets too long, but keep full value internally
+            const MAX_DISPLAY_LENGTH = 9; // Adjust as needed
+            let displayValue = currentInput;
 
-        const GAME_SETTINGS = {
-            BET_OPEN_TIME_MS: 5000,
-            GAME_UPDATE_INTERVAL_MS: 100,
-            MIN_BET: 1.00,
-            MAX_BET: 100.00,
-            MIN_CASHOUT: 1.01,
-            MAX_CASHOUT: 1000.00,
-            MAX_HISTORY: 15,
-            MAX_FAKE_PLAYERS: 5,
-        };
+            if (currentInput.includes('e')) { // Handle scientific notation
+                display.textContent = currentInput;
+                return;
+            }
 
-        // --- Utility Functions ---
-        function showNotification(message, duration = 3000) {
-            clearTimeout(state.notificationTimeout);
-            DOM.notification.textContent = message;
-            DOM.notification.classList.add('show');
-            state.notificationTimeout = setTimeout(() => {
-                DOM.notification.classList.remove('show');
-            }, duration);
+            if (currentInput.length > MAX_DISPLAY_LENGTH && !currentInput.includes('.')) {
+                // If a large integer, display in scientific notation or truncate
+                displayValue = parseFloat(currentInput).toPrecision(MAX_DISPLAY_LENGTH).replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.0*$/, '');
+            } else if (currentInput.length > MAX_DISPLAY_LENGTH && currentInput.includes('.')) {
+                // If a large decimal, try to fit by reducing precision
+                displayValue = parseFloat(currentInput).toFixed(MAX_DISPLAY_LENGTH - currentInput.indexOf('.') - 1);
+                // Remove trailing zeros and dot if it becomes integer after fix
+                displayValue = parseFloat(displayValue).toString();
+            }
+
+            // Ensure 'Error' or other messages are fully displayed
+            if (currentInput === "Error" || currentInput === "Infinity" || currentInput === "-Infinity") {
+                 displayValue = currentInput;
+            }
+
+            display.textContent = displayValue;
         }
 
-        function formatCurrency(value) {
-            return value.toFixed(2);
-        }
+        /** Appends a number or decimal point to the current input. */
+        function appendNumber(number) {
+            if (currentInput === "Error") { // Clear error state on new number input
+                currentInput = '0';
+                previousInput = '';
+                operator = null;
+                waitingForNewInput = false;
+            }
 
-        function generateRandomMultiplier() {
-            let rand = Math.random();
-            if (rand < 0.05) return Math.max(1.01, 1 + Math.random() * 0.1);
-            if (rand < 0.20) return 1.01 + Math.random() * 1.5;
-            if (rand < 0.60) return 2.5 + Math.random() * 7.5;
-            if (rand < 0.90) return 10 + Math.random() * 40;
-            return 50 + Math.random() * 100;
-        }
-
-        function updateUI() {
-            DOM.accountBalance.textContent = formatCurrency(state.balance);
-            DOM.multiplierValue.textContent = `${state.currentMultiplier.toFixed(2)}x`;
-            DOM.gameStatus.textContent = state.gameStatus.replace('_', ' ').toUpperCase();
-
-            DOM.placeBetBtn.disabled = state.gameStatus !== 'bets_open' || state.playerBetPending;
-            DOM.cancelBetBtn.disabled = state.gameStatus !== 'bets_open' || !state.playerBetPending;
-            DOM.cashOutBtn.disabled = state.gameStatus !== 'in_progress' || !state.playerInGame || state.playerCashedOutAt > 0;
-
-            if (state.gameStatus === 'in_progress') {
-                const glowIntensity = Math.min(1, state.currentMultiplier / 10);
-                DOM.multiplierValue.style.textShadow = `0 0 10px rgba(167, 0, 255, ${glowIntensity}), 0 0 30px rgba(209, 0, 255, ${glowIntensity})`;
+            if (waitingForNewInput) {
+                currentInput = number === '.' ? '0.' : number; // Start with '0.' if decimal is first
+                waitingForNewInput = false;
             } else {
-                DOM.multiplierValue.style.textShadow = '';
-            }
-        }
-
-        function updateRecentResults() {
-            DOM.recentResults.innerHTML = '';
-            state.recentCrashes.slice(-GAME_SETTINGS.MAX_HISTORY).forEach(crash => {
-                const resultDiv = document.createElement('div');
-                resultDiv.classList.add('result-item');
-                resultDiv.textContent = `${crash.toFixed(2)}x`;
-                DOM.recentResults.appendChild(resultDiv);
-            });
-            DOM.recentResults.scrollLeft = DOM.recentResults.scrollWidth;
-        }
-
-        function addActivityFeedItem(username, bet, cashout, cashedOut = false) {
-            const item = document.createElement('div');
-            item.classList.add('activity-feed-item');
-            if (cashedOut) {
-                item.classList.add('cashed-out');
-            }
-            item.innerHTML = `
-                <span class="player-name">${username}</span>
-                <span class="bet-amount">${formatCurrency(bet)}G</span>
-                <span class="cashout-multiplier">${cashedOut ? `${cashout.toFixed(2)}x` : '...'}</span>
-            `;
-            DOM.activityFeed.prepend(item);
-
-            if (DOM.activityFeed.children.length > 20) {
-                DOM.activityFeed.lastChild.remove();
-            }
-        }
-
-        // --- Game Logic ---
-        let simulatedPlayers = [];
-        let playerActivityInterval;
-
-        function startGameRound() {
-            state.gameStatus = 'in_progress';
-            state.currentMultiplier = 1.00;
-            state.crashPoint = generateRandomMultiplier();
-            state.playerCashedOutAt = 0;
-            DOM.multiplierValue.classList.remove('crashed');
-            DOM.countdown.textContent = '';
-            updateUI();
-
-            let startTime = performance.now();
-            const animateMultiplier = (timestamp) => {
-                if (state.gameStatus !== 'in_progress') return;
-
-                const elapsed = (timestamp - startTime) / 1000;
-                let growthRate = 0.005;
-                if (state.currentMultiplier >= 10) growthRate = 0.01;
-                if (state.currentMultiplier >= 50) growthRate = 0.02;
-
-                state.currentMultiplier += growthRate * (state.currentMultiplier / 10);
-                state.currentMultiplier = Math.max(1.00, state.currentMultiplier);
-
-                if (state.currentMultiplier >= state.crashPoint) {
-                    state.currentMultiplier = state.crashPoint;
-                    crashGame();
-                    return;
+                if (number === '.' && currentInput.includes('.')) {
+                    return; // Prevent multiple decimal points
                 }
-
-                DOM.multiplierValue.textContent = `${state.currentMultiplier.toFixed(2)}x`;
-                updateUI();
-
-                if (state.playerInGame && state.autoCashout > 0 && state.currentMultiplier >= state.autoCashout) {
-                    cashOut();
+                if (currentInput === '0' && number !== '.') {
+                    currentInput = number; // Replace initial '0' unless it's a decimal
+                } else {
+                    currentInput += number;
                 }
-
-                state.gameInterval = requestAnimationFrame(animateMultiplier);
-            };
-            state.gameInterval = requestAnimationFrame(animateMultiplier);
-
-            simulatePlayerActivity();
-            document.dispatchEvent(new Event('gameStart')); // Notify listeners that game has started
+            }
+            updateDisplay();
         }
 
-        function simulatePlayerActivity() {
-            simulatedPlayers = [];
-            for (let i = 0; i < GAME_SETTINGS.MAX_FAKE_PLAYERS; i++) {
-                simulatedPlayers.push({
-                    name: `Guest${Math.floor(Math.random() * 9000) + 1000}`,
-                    bet: parseFloat((Math.random() * 50 + 5).toFixed(2)),
-                    cashoutAt: parseFloat((Math.random() * 5 + 1.01).toFixed(2)),
-                    inGame: true,
-                });
+        /** Sets the operator for the calculation. */
+        function chooseOperator(op) {
+            if (currentInput === '') return; // No input to operate on
+
+            if (previousInput !== '' && operator !== null && !waitingForNewInput) {
+                calculate(); // Chain operations: e.g., 5 + 3 + (new operator)
             }
 
-            simulatedPlayers.forEach(p => addActivityFeedItem(p.name, p.bet, 0, false));
+            operator = op;
+            previousInput = currentInput;
+            waitingForNewInput = true; // Next number input will start a new currentInput
+            updateDisplay(); // Update display to show previousInput (or current if nothing changed yet)
+        }
 
-            clearInterval(playerActivityInterval);
-            playerActivityInterval = setInterval(() => {
-                if (state.gameStatus !== 'in_progress') {
-                    clearInterval(playerActivityInterval);
-                    return;
-                }
+        /** Performs the calculation based on the stored operator and operands. */
+        function calculate() {
+            if (previousInput === '' || operator === null) {
+                return; // Nothing to calculate
+            }
 
-                simulatedPlayers.forEach(p => {
-                    if (p.inGame && state.currentMultiplier >= p.cashoutAt && p.cashoutAt <= state.crashPoint) {
-                        addActivityFeedItem(p.name, p.bet, p.cashoutAt, true);
-                        p.inGame = false;
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(current)) {
+                currentInput = "Error";
+                updateDisplay();
+                return;
+            }
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        currentInput = "Error"; // Division by zero
+                        previousInput = '';
+                        operator = null;
+                        waitingForNewInput = true;
+                        updateDisplay();
+                        return;
                     }
-                });
-            }, GAME_SETTINGS.GAME_UPDATE_INTERVAL_MS * 5);
+                    result = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            currentInput = String(result);
+            operator = null;
+            previousInput = '';
+            waitingForNewInput = true; // Ready for a new operation or number after result
+            updateDisplay();
         }
 
-        function crashGame() {
-            cancelAnimationFrame(state.gameInterval);
-            clearInterval(playerActivityInterval);
-            state.gameStatus = 'crashed';
-            DOM.multiplierValue.textContent = `${state.currentMultiplier.toFixed(2)}x`;
-            DOM.multiplierValue.classList.add('crashed');
-            state.recentCrashes.push(state.currentMultiplier);
-            updateRecentResults();
-            updateUI();
-
-            simulatedPlayers.forEach(p => {
-                if (p.inGame) {
-                    addActivityFeedItem(p.name, p.bet, state.currentMultiplier, false);
-                }
-            });
-
-            setTimeout(resetGameRound, 3000);
+        /** Clears all calculator state. */
+        function clearAll() {
+            currentInput = '0';
+            previousInput = '';
+            operator = null;
+            waitingForNewInput = false;
+            updateDisplay();
         }
 
-        function resetGameRound() {
-            state.gameStatus = 'bets_open';
-            state.currentMultiplier = 1.00;
-            state.playerBetPending = false;
-            state.playerInGame = false;
-            state.playerCashedOutAt = 0;
-            DOM.multiplierValue.classList.remove('crashed');
-            DOM.activityFeed.innerHTML = '';
-            updateUI();
-
-            let countdown = GAME_SETTINGS.BET_OPEN_TIME_MS / 1000;
-            DOM.countdown.textContent = `Next round in ${countdown}s`;
-            clearInterval(state.countdownTimer);
-            state.countdownTimer = setInterval(() => {
-                countdown--;
-                DOM.countdown.textContent = `Next round in ${countdown}s`;
-                if (countdown <= 0) {
-                    clearInterval(state.countdownTimer);
-                    DOM.countdown.textContent = '';
-                    startGameRound();
-                }
-            }, 1000);
-        }
-
-        // --- Betting Actions ---
-        function placeBet() {
-            const bet = parseFloat(DOM.betAmountInput.value);
-            const autoCashout = parseFloat(DOM.autoCashoutInput.value);
-
-            if (isNaN(bet) || bet < GAME_SETTINGS.MIN_BET || bet > GAME_SETTINGS.MAX_BET) {
-                showNotification(`Bet amount must be between ${formatCurrency(GAME_SETTINGS.MIN_BET)} and ${formatCurrency(GAME_SETTINGS.MAX_BET)}.`);
+        /** Deletes the last character from the current input. */
+        function deleteLast() {
+            if (currentInput === "Error") {
+                clearAll(); // If in error state, clear everything
                 return;
             }
-            if (isNaN(autoCashout) || autoCashout < GAME_SETTINGS.MIN_CASHOUT || autoCashout > GAME_SETTINGS.MAX_CASHOUT) {
-                showNotification(`Auto Cashout must be between ${GAME_SETTINGS.MIN_CASHOUT}x and ${GAME_SETTINGS.MAX_CASHOUT}x.`);
-                return;
-            }
-            if (bet > state.balance) {
-                showNotification('Insufficient Balance!');
-                return;
-            }
+            if (currentInput === '0' && !waitingForNewInput) return; // Cannot delete initial zero
 
-            state.currentBet = bet;
-            state.autoCashout = autoCashout;
-            state.balance -= state.currentBet;
-            state.playerBetPending = true;
-            state.playerInGame = false;
-
-            showNotification(`Bet of ${formatCurrency(state.currentBet)}G placed! Auto Cashout: ${state.autoCashout}x`, 2500);
-            updateUI();
-
-            addActivityFeedItem('PlayerOne', state.currentBet, state.autoCashout, false);
-        }
-
-        function cancelBet() {
-            if (!state.playerBetPending) return;
-
-            state.balance += state.currentBet;
-            state.currentBet = 0;
-            state.autoCashout = 0;
-            state.playerBetPending = false;
-            state.playerInGame = false;
-            showNotification('Bet cancelled.', 2000);
-            updateUI();
-        }
-
-        function cashOut() {
-            if (!state.playerInGame || state.playerCashedOutAt > 0) return;
-
-            const winnings = state.currentBet * state.currentMultiplier;
-            state.balance += winnings;
-            state.playerCashedOutAt = state.currentMultiplier;
-            state.playerInGame = false;
-            state.playerBetPending = false;
-
-            showNotification(`Cashed out at ${state.currentMultiplier.toFixed(2)}x for ${formatCurrency(winnings)}G!`, 3500);
-            updateUI();
-
-            const playerEntry = Array.from(DOM.activityFeed.children).find(item =>
-                item.querySelector('.player-name').textContent === 'PlayerOne' && !item.classList.contains('cashed-out')
-            );
-            if (playerEntry) {
-                playerEntry.classList.add('cashed-out');
-                playerEntry.querySelector('.cashout-multiplier').textContent = `${state.playerCashedOutAt.toFixed(2)}x`;
+            if (currentInput.length === 1 || (currentInput.length === 2 && currentInput.startsWith('-'))) {
+                currentInput = '0'; // If only one digit or '-X', reset to '0'
             } else {
-                addActivityFeedItem('PlayerOne', state.currentBet, state.playerCashedOutAt, true);
+                currentInput = currentInput.slice(0, -1);
             }
+            updateDisplay();
         }
 
-        // --- Event Listeners ---
-        DOM.placeBetBtn.addEventListener('click', placeBet);
-        DOM.cancelBetBtn.addEventListener('click', cancelBet);
-        DOM.cashOutBtn.addEventListener('click', cashOut);
-
-        DOM.quickBetButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const action = e.target.dataset.action;
-                let currentBet = parseFloat(DOM.betAmountInput.value);
-                if (isNaN(currentBet)) currentBet = 0;
-
-                switch (action) {
-                    case 'min':
-                        DOM.betAmountInput.value = GAME_SETTINGS.MIN_BET.toFixed(2);
-                        break;
-                    case 'max':
-                        DOM.betAmountInput.value = GAME_SETTINGS.MAX_BET.toFixed(2);
-                        break;
-                    case 'half':
-                        DOM.betAmountInput.value = Math.max(GAME_SETTINGS.MIN_BET, currentBet / 2).toFixed(2);
-                        break;
-                    case 'double':
-                        DOM.betAmountInput.value = Math.min(GAME_SETTINGS.MAX_BET, currentBet * 2).toFixed(2);
-                        break;
+        // Add event listeners to all buttons
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.classList.contains('number') || button.classList.contains('decimal')) {
+                    appendNumber(button.textContent);
+                } else if (button.classList.contains('operator')) {
+                    chooseOperator(button.textContent);
+                } else if (button.classList.contains('equals')) {
+                    calculate();
+                } else if (button.classList.contains('clear')) {
+                    clearAll();
+                } else if (button.classList.contains('backspace')) {
+                    deleteLast();
                 }
             });
-        });
-
-        document.addEventListener('gameStart', () => {
-            if (state.playerBetPending) {
-                state.playerInGame = true;
-                state.playerBetPending = false;
-                showNotification('Your bet is in!', 1500);
-            }
-            updateUI();
-        });
-
-        // Initialize game
-        document.addEventListener('DOMContentLoaded', () => {
-            updateUI();
-            resetGameRound();
-            DOM.serverSeed.textContent = state.serverSeedValue;
-            DOM.clientSeed.textContent = state.clientSeedValue;
         });
     </script>
 </body>
