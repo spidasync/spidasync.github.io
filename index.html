@@ -3,387 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantumCalc</title>
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <title>Reach Us - ConnectVerse</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
         :root {
-            --bg-color: #e0e0e0;
-            --calc-bg: #f9f9f9;
-            --button-color: #ffffff;
-            --operator-color: #f7922d;
-            --clear-delete-color: #d3d3d3;
-            --equals-color: #2a7eef;
-            --text-color: #333333;
-            --display-text-color: #333333;
-            --shadow-light: #ffffff;
-            --shadow-dark: #bebebe;
-            --border-radius: 18px;
-            --button-radius: 12px;
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --text-color: #333;
+            --bg-color: #f7f9fc;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --input-border: #ccc;
+            --hover-color: #550bb0;
+            --success-color: #28a745;
         }
 
         html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            height: 100%;
-            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-color);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            overflow: auto; /* Ensure scrolling if content overflows */
         }
 
-        .calculator-container {
-            background-color: var(--calc-bg);
-            border-radius: var(--border-radius);
-            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 360px; /* Fixed width for desktop */
-            height: 580px; /* Fixed height for desktop */
-            user-select: none;
-        }
-
-        .branding {
-            font-size: 20px;
-            font-weight: 600;
+        .contact-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
             text-align: center;
-            color: var(--operator-color);
-            letter-spacing: 1px;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+            margin: 20px; /* Add margin for smaller screens/safety */
         }
 
-        .output {
-            background-color: #f0f0f0;
-            border-radius: var(--button-radius);
-            padding: 20px;
-            text-align: right;
-            margin-bottom: 10px;
-            box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
-            height: 100px; /* Fixed height for display */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            overflow: hidden; /* Ensure content doesn't spill */
+        h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 700;
         }
 
-        .output .previous-operand {
-            color: rgba(51, 51, 51, 0.7);
-            font-size: 28px;
-            min-height: 32px; /* Ensure space even when empty */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
         }
 
-        .output .current-operand {
-            color: var(--display-text-color);
-            font-size: 56px;
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1em;
             font-weight: 600;
-            min-height: 64px; /* Ensure space even when empty */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            color: #555;
         }
 
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 15px;
-            flex-grow: 1; /* Allow grid to fill available space */
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: calc(100% - 24px); /* Adjust for padding */
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
-        .calculator-grid > button {
-            background-color: var(--button-color);
-            border: none;
-            border-radius: var(--button-radius);
-            font-size: 32px;
-            cursor: pointer;
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
             outline: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-            transition: all 0.1s ease-in-out;
-            color: var(--text-color);
-            font-weight: 400;
         }
 
-        .calculator-grid > button:hover {
-            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
-            transform: translateY(1px);
+        textarea {
+            resize: vertical;
+            min-height: 120px;
         }
 
-        .calculator-grid > button:active {
-            box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
-            transform: translateY(2px);
-            font-size: 30px; /* Slight press effect */
-        }
-
-        .calculator-grid > button.span-two {
-            grid-column: span 2;
-        }
-
-        .calculator-grid > button[data-operation],
-        .calculator-grid > button[data-equals] {
-            background-color: var(--operator-color);
+        button {
+            background-color: var(--primary-color);
             color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
             font-weight: 600;
-        }
-        .calculator-grid > button[data-operation]:hover,
-        .calculator-grid > button[data-equals]:hover {
-            background-color: #e68324; /* Darker orange */
-        }
-        .calculator-grid > button[data-operation]:active,
-        .calculator-grid > button[data-equals]:active {
-            background-color: #cc741d; /* Even darker orange */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            width: auto;
+            min-width: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .calculator-grid > button[data-all-clear],
-        .calculator-grid > button[data-delete] {
-            background-color: var(--clear-delete-color);
-            color: var(--text-color);
-        }
-        .calculator-grid > button[data-all-clear]:hover,
-        .calculator-grid > button[data-delete]:hover {
-            background-color: #c0c0c0; /* Darker gray */
-        }
-        .calculator-grid > button[data-all-clear]:active,
-        .calculator-grid > button[data-delete]:active {
-            background-color: #ababab; /* Even darker gray */
+        button:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        /* Specific style for the equals button */
-        .calculator-grid > button[data-equals] {
-            background-color: var(--equals-color);
-            color: white;
-        }
-        .calculator-grid > button[data-equals]:hover {
-            background-color: #216ccf; /* Darker blue */
-        }
-        .calculator-grid > button[data-equals]:active {
-            background-color: #1a5bae; /* Even darker blue */
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Backspace icon style */
-        .calculator-grid > button[data-delete] {
-            font-size: 28px;
+        #statusMessage {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none; /* Hidden by default */
+            font-size: 1.05em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
         }
 
+        #statusMessage.success {
+            background-color: #d4edda;
+            color: var(--success-color);
+            border: 1px solid #c3e6cb;
+        }
+
+        #statusMessage.error {
+            background-color: #f8d7da;
+            color: #dc3545;
+            border: 1px solid #f5c6cb;
+        }
+
+        #statusMessage.show {
+            display: block;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
-    <div class="calculator-container">
-        <div class="branding">QuantumCalc</div>
-        <div class="calculator-grid">
-            <div class="output">
-                <div data-previous-operand class="previous-operand"></div>
-                <div data-current-operand class="current-operand">0</div>
+    <div class="contact-container">
+        <h2>Reach Us at ConnectVerse</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
             </div>
-            <button data-all-clear class="span-two">AC</button>
-            <button data-delete>&#x232B;</button> <!-- Backspace icon -->
-            <button data-operation>÷</button>
-            <button data-number>7</button>
-            <button data-number>8</button>
-            <button data-number>9</button>
-            <button data-operation>×</button>
-            <button data-number>4</button>
-            <button data-number>5</button>
-            <button data-number>6</button>
-            <button data-operation>−</button>
-            <button data-number>1</button>
-            <button data-number>2</button>
-            <button data-number>3</button>
-            <button data-operation>+</button>
-            <button data-number class="span-two">0</button>
-            <button data-number>.</button>
-            <button data-equals>=</button>
-        </div>
+            <div class="form-group">
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Briefly state your query" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
+        <div id="statusMessage"></div>
     </div>
 
     <script>
-        class Calculator {
-            constructor(previousOperandTextElement, currentOperandTextElement) {
-                this.previousOperandTextElement = previousOperandTextElement;
-                this.currentOperandTextElement = currentOperandTextElement;
-                this.clear();
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactForm = document.getElementById('contactForm');
+            const statusMessage = document.getElementById('statusMessage');
 
-            clear() {
-                this.currentOperand = '0';
-                this.previousOperand = '';
-                this.operation = undefined;
-            }
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent actual form submission
 
-            delete() {
-                if (this.currentOperand === '0' || this.currentOperand.length === 1) {
-                    this.currentOperand = '0';
-                } else {
-                    this.currentOperand = this.currentOperand.toString().slice(0, -1);
-                }
-            }
+                // Get form data
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
 
-            appendNumber(number) {
-                if (number === '.' && this.currentOperand.includes('.')) return;
-                if (this.currentOperand === '0' && number !== '.') {
-                    this.currentOperand = number.toString();
-                } else {
-                    this.currentOperand = this.currentOperand.toString() + number.toString();
-                }
-            }
-
-            chooseOperation(operation) {
-                if (this.currentOperand === '0' && this.previousOperand === '') return; // Don't allow operation if both are empty or just 0
-                if (this.currentOperand === '0' && this.previousOperand !== '') {
-                    // Allows changing operation if current operand is 0 and a previous operation exists
-                    this.operation = operation;
+                // Simple validation
+                if (!name || !email || !subject || !message) {
+                    displayStatus('Please fill in all fields.', 'error');
                     return;
                 }
 
-                if (this.previousOperand !== '') {
-                    this.compute();
+                if (!validateEmail(email)) {
+                    displayStatus('Please enter a valid email address.', 'error');
+                    return;
                 }
-                this.operation = operation;
-                this.previousOperand = this.currentOperand;
-                this.currentOperand = '0'; // Reset current operand for next number input
-            }
 
-            compute() {
-                let computation;
-                const prev = parseFloat(this.previousOperand);
-                const current = parseFloat(this.currentOperand);
-                if (isNaN(prev) || isNaN(current)) return;
-                switch (this.operation) {
-                    case '+':
-                        computation = prev + current;
-                        break;
-                    case '−': // Minus sign
-                        computation = prev - current;
-                        break;
-                    case '×': // Multiplication sign
-                        computation = prev * current;
-                        break;
-                    case '÷': // Division sign
-                        if (current === 0) {
-                            this.currentOperand = 'Error';
-                            this.previousOperand = '';
-                            this.operation = undefined;
-                            return;
-                        }
-                        computation = prev / current;
-                        break;
-                    default:
-                        return;
-                }
-                this.currentOperand = computation;
-                this.operation = undefined;
-                this.previousOperand = '';
-            }
+                // Simulate form submission
+                console.log('Form Submitted:');
+                console.log('Name:', name);
+                console.log('Email:', email);
+                console.log('Subject:', subject);
+                console.log('Message:', message);
 
-            getDisplayNumber(number) {
-                const stringNumber = number.toString();
-                const integerDigits = parseFloat(stringNumber.split('.')[0]);
-                const decimalDigits = stringNumber.split('.')[1];
-                let integerDisplay;
-                if (isNaN(integerDigits)) {
-                    integerDisplay = '';
-                } else {
-                    integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 });
-                }
-                if (decimalDigits != null) {
-                    return `${integerDisplay}.${decimalDigits}`;
-                } else {
-                    return integerDisplay;
-                }
-            }
+                // Display success message
+                displayStatus('Thank you for your message! We will get back to you soon.', 'success');
 
-            updateDisplay() {
-                this.currentOperandTextElement.innerText =
-                    this.getDisplayNumber(this.currentOperand);
-                if (this.operation != null) {
-                    this.previousOperandTextElement.innerText =
-                        `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
-                } else {
-                    this.previousOperandTextElement.innerText = '';
-                }
-            }
-        }
-
-        const numberButtons = document.querySelectorAll('[data-number]');
-        const operationButtons = document.querySelectorAll('[data-operation]');
-        const equalsButton = document.querySelector('[data-equals]');
-        const deleteButton = document.querySelector('[data-delete]');
-        const allClearButton = document.querySelector('[data-all-clear]');
-        const previousOperandTextElement = document.querySelector('[data-previous-operand]');
-        const currentOperandTextElement = document.querySelector('[data-current-operand]');
-
-        const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement);
-
-        numberButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                calculator.appendNumber(button.innerText);
-                calculator.updateDisplay();
+                // Clear the form after a short delay
+                setTimeout(() => {
+                    contactForm.reset(); // Resets all form fields
+                    hideStatus();
+                }, 3000);
             });
-        });
 
-        operationButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                calculator.chooseOperation(button.innerText);
-                calculator.updateDisplay();
-            });
-        });
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
 
-        equalsButton.addEventListener('click', button => {
-            calculator.compute();
-            calculator.updateDisplay();
-        });
+            function displayStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = 'show ' + type; // Set class for styling and visibility
+                
+                // Automatically hide after some time if it's an error/success
+                if (type === 'success' || type === 'error') {
+                    setTimeout(hideStatus, 5000); // Hide after 5 seconds
+                }
+            }
 
-        allClearButton.addEventListener('click', button => {
-            calculator.clear();
-            calculator.updateDisplay();
-        });
-
-        deleteButton.addEventListener('click', button => {
-            calculator.delete();
-            calculator.updateDisplay();
-        });
-
-        // Keyboard support
-        document.addEventListener('keydown', e => {
-            if (e.key >= '0' && e.key <= '9') {
-                calculator.appendNumber(e.key);
-                calculator.updateDisplay();
-            }
-            if (e.key === '.') {
-                calculator.appendNumber(e.key);
-                calculator.updateDisplay();
-            }
-            if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
-                let op;
-                if (e.key === '*') op = '×';
-                else if (e.key === '/') op = '÷';
-                else if (e.key === '-') op = '−';
-                else op = e.key;
-                calculator.chooseOperation(op);
-                calculator.updateDisplay();
-            }
-            if (e.key === 'Enter' || e.key === '=') {
-                e.preventDefault(); // Prevent default Enter key behavior (e.g., form submission)
-                calculator.compute();
-                calculator.updateDisplay();
-            }
-            if (e.key === 'Backspace') {
-                calculator.delete();
-                calculator.updateDisplay();
-            }
-            if (e.key === 'Delete' || e.key === 'Escape') { // Escape for clear (AC)
-                calculator.clear();
-                calculator.updateDisplay();
+            function hideStatus() {
+                statusMessage.classList.remove('show');
+                statusMessage.classList.remove('success');
+                statusMessage.classList.remove('error');
             }
         });
     </script>
