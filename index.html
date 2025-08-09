@@ -3,334 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CalcSphere - Simple Calculator</title>
+    <title>The Whimsical World of Pink Cats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* General Reset & Page Setup */
-        body {
+        /* CSS Variables for Dark Theme */
+        :root {
+            --bg-primary: #1A0D1F; /* Very dark purple */
+            --bg-secondary: #2C1B3B; /* Slightly lighter dark purple for sections/cards */
+            --text-light: #F0F0F0; /* Off-white for text */
+            --pink-accent: #FF69B4; /* Vibrant Hot Pink */
+            --pink-light: #FFC0CB; /* Light Pink for subtle accents/hover */
+            --border-color: #5C4B6D; /* Muted purple for borders/dividers */
+            --font-heading: 'Comfortaa', cursive, sans-serif;
+            --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --border-radius-soft: 12px;
+            --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Base Styles and Resets */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f2f5; /* Light grey background */
-            overflow: hidden; /* Prevent body scroll if content doesn't fill */
         }
 
-        /* Calculator Container */
-        .calculator {
-            background-color: #2c2c2c; /* Dark charcoal */
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            width: 320px; /* Standard width for a simple calculator */
-            padding: 20px;
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-light);
+            background-color: var(--bg-primary);
+            line-height: 1.6;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Spacing between display and buttons */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
         }
 
-        /* Branding */
-        .brand {
-            color: #ccc;
-            font-size: 1.1em;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        h1, h2 {
+            font-family: var(--font-heading);
+            color: var(--pink-accent);
             text-align: center;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            font-weight: 700;
         }
 
-        /* Display */
-        .display {
-            background-color: #1a1a1a; /* Even darker for display */
-            color: #ffffff;
-            font-size: 3.5em; /* Large font for readability */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: right;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis; /* Handle long numbers */
-            min-height: 70px; /* Ensure display height */
+        h1 {
+            font-size: 2.8em;
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 2.2em;
+        }
+
+        section {
+            padding: 80px 0;
+            min-height: 70vh; /* Ensures sections occupy significant screen space */
             display: flex;
-            align-items: flex-end; /* Align text to bottom right */
-            justify-content: flex-end;
-            letter-spacing: 1px;
-            font-weight: 300; /* Lighter weight for modern look */
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: var(--bg-primary); /* Default */
         }
 
-        /* Buttons Grid */
-        .buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 columns */
-            gap: 12px; /* Spacing between buttons */
+        section:nth-of-type(odd) {
+            background-color: var(--bg-secondary);
         }
 
-        /* Button Styling */
-        .button {
-            background-color: #4a4a4a; /* Dark grey for numbers */
-            color: #ffffff;
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        }
+
+        header h1 {
+            margin: 0;
             font-size: 1.8em;
-            padding: 20px 0; /* Vertical padding only, width controlled by grid */
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        nav ul {
+            list-style: none;
             display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: color 0.3s ease, background-color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--pink-accent);
+            background-color: rgba(255, 105, 180, 0.1);
+            text-shadow: 0 0 8px var(--pink-light);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--bg-primary), #3B2B4A); /* Gentle gradient */
+            color: var(--text-light);
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            user-select: none; /* Prevent text selection */
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+            padding: 20px;
+            position: relative;
         }
 
-        .button:hover {
-            background-color: #5a5a5a; /* Lighter hover */
+        .hero-content {
+            z-index: 1;
         }
 
-        .button:active {
-            transform: translateY(1px); /* Slight press effect */
-            box-shadow: 0 0 5px rgba(0,0,0,0.2) inset;
+        .hero-section h2 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.7);
         }
 
-        /* Specific Button Colors & Sizes */
-        .button.operator,
-        .button.equals {
-            background-color: #ff9500; /* Vibrant orange for operators */
-            color: #ffffff;
-            font-size: 2em; /* Slightly larger for emphasis */
-            font-weight: 500;
-        }
-        .button.operator:hover,
-        .button.equals:hover {
-            background-color: #ffad33; /* Lighter orange hover */
+        .hero-icon {
+            font-size: 8em; /* Large icon for hero */
+            color: var(--pink-accent);
+            margin-bottom: 40px;
+            animation: pulse 2s infinite alternate;
         }
 
-        .button.clear,
-        .button.backspace {
-            background-color: #6a6a6a; /* Lighter grey for utility buttons */
-            color: #ffffff;
-            font-size: 1.6em; /* Slightly smaller for 'AC' and '⌫' */
-        }
-        .button.clear:hover,
-        .button.backspace:hover {
-            background-color: #7a7a7a;
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.05); opacity: 1; }
         }
 
-        /* Special Grid Spanning */
-        .button.zero {
-            grid-column: span 2; /* Make zero button span two columns */
-            text-align: left; /* Align '0' to the left within its merged cell */
-            padding-left: 30px; /* Add padding to push '0' left */
-            justify-content: flex-start; /* Ensure flex content aligns left */
+        .cta-button {
+            background-color: var(--pink-accent);
+            color: var(--bg-primary);
+            padding: 18px 35px;
+            border: none;
+            border-radius: var(--border-radius-soft);
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: var(--shadow-subtle);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Ensure equals button spans two rows */
-        .button.equals {
-            grid-row: span 2;
-            grid-column: 4 / 5; /* Starts at column 4, ends before column 5 */
-            height: auto; /* Allow auto height based on content */
+        .cta-button:hover {
+            background-color: var(--pink-light);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
         }
 
-        /* Focus outline removal for accessibility, add custom one if needed */
-        .button:focus {
-            outline: none;
+        /* About Pink Cats Section */
+        .about-section .container {
+            max-width: 900px;
+        }
+
+        .about-section p {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        /* Pink Cat Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .gallery-item {
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius-soft);
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+            border: 2px solid var(--pink-accent);
+        }
+
+        .pink-cat-icon {
+            font-size: 5em; /* Large icons for gallery */
+            color: var(--pink-accent);
+            margin-bottom: 15px;
+            line-height: 1;
+            filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.5));
+        }
+
+        .gallery-item p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            color: var(--text-light);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto; /* Pushes footer to the bottom */
+        }
+
+        footer p:first-of-type {
+            margin-bottom: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            header h1 {
+                margin-bottom: 15px;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero-section h2 {
+                font-size: 2.5em;
+            }
+            .hero-icon {
+                font-size: 6em;
+            }
+            .cta-button {
+                padding: 15px 25px;
+                font-size: 1.1em;
+            }
+            section {
+                padding: 60px 0;
+                min-height: unset; /* Allow sections to shrink on smaller screens */
+            }
+            .about-section p {
+                font-size: 1em;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr; /* Stack items vertically on small screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            header h1 {
+                padding: 0 10px;
+            }
+            .hero-section h2 {
+                font-size: 2em;
+            }
+            .hero-icon {
+                font-size: 5em;
+            }
+            .cta-button {
+                font-size: 1em;
+                padding: 12px 20px;
+            }
+            .container {
+                padding: 0 15px;
+            }
+            .gallery-item {
+                padding: 20px;
+            }
+            .pink-cat-icon {
+                font-size: 4em;
+            }
+            .gallery-item p {
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="calculator">
-        <div class="brand">CalcSphere</div>
-        <div class="display" id="display">0</div>
-        <div class="buttons-grid">
-            <button class="button clear">AC</button>
-            <button class="button backspace">⌫</button>
-            <button class="button operator">/</button>
-            <button class="button operator">*</button>
-
-            <button class="button number">7</button>
-            <button class="button number">8</button>
-            <button class="button number">9</button>
-            <button class="button operator">-</button>
-
-            <button class="button number">4</button>
-            <button class="button number">5</button>
-            <button class="button number">6</button>
-            <button class="button operator">+</button>
-
-            <button class="button number">1</button>
-            <button class="button number">2</button>
-            <button class="button number">3</button>
-            <button class="button equals">=</button> <!-- This button will span 2 rows via CSS -->
-
-            <button class="button number zero">0</button> <!-- This button will span 2 columns via CSS -->
-            <button class="button number decimal">.</button>
+    <header>
+        <div class="container">
+            <h1 id="home">The Whimsical World of Pink Cats</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                </ul>
+            </nav>
         </div>
-    </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h2>Discover the Magic of Pink Cats</h2>
+            <div class="hero-icon">&#x1F431;</div> <!-- Cat Face Emoji -->
+            <button class="cta-button">Embrace the Whimsy</button>
+        </div>
+    </section>
+
+    <main>
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2>About Pink Cats</h2>
+                <p>
+                    In a realm touched by moonlight and sprinkled with stardust, reside the enchanting Pink Cats.
+                    These mythical felines are not merely a shade of rose; they embody joy, mystery, and an unparalleled grace.
+                    Their soft hues are said to reflect the gentle glow of dawn and the warmth of a purr, making them truly unique.
+                </p>
+                <p>
+                    Legend has it that Pink Cats bring good fortune and endless cuddles to those who truly appreciate their whimsical charm.
+                    They are symbols of creativity and playful spirit, inspiring wonder with every whiskered twitch and every silent stride.
+                    Dive deeper into their world and let your imagination roam free in this realm of delightful felines!
+                </p>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div class="container">
+                <h2>Pink Cat Gallery</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#128008;</span> <!-- Cat Emoji -->
+                        <p>Misty Rose</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#x1F431;</span> <!-- Cat Face Emoji -->
+                        <p>Velvet Paw</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#128570;</span> <!-- Cat Face with Wry Smile -->
+                        <p>Whisker Wonder</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#1F63B;</span> <!-- Smiling Cat Face with Open Mouth and Smiling Eyes (Happy Cat) -->
+                        <p>Crimson Purr</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#1F63C;</span> <!-- Grinning Cat Face with Smiling Eyes -->
+                        <p>Cotton Tail</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#1F431;</span>
+                        <p>Dreamy Pink</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#128008;</span>
+                        <p>Strawberry Whisker</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#128571;</span> <!-- Cat Face with Tears of Joy -->
+                        <p>Rose Blossom</p>
+                    </div>
+                    <div class="gallery-item">
+                        <span class="pink-cat-icon">&#128572;</span> <!-- Kissing Cat Face -->
+                        <p>Bubblegum Mew</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Whimsical World of Pink Cats. All rights reserved.</p>
+        <p>Lovingly crafted for Pink Cat Enthusiasts.</p>
+    </footer>
 
     <script>
-        const display = document.getElementById('display');
-        let currentInput = '0'; // Stores the number currently being input or the result
-        let previousInput = ''; // Stores the first operand for an operation
-        let operator = null;    // Stores the selected operator (+, -, *, /)
-        let waitingForNewInput = false; // Flag to indicate if the next digit pressed should start a new number
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctaButton = document.querySelector('.cta-button');
 
-        /** Updates the display with the currentInput value. */
-        function updateDisplay() {
-            // Limit length for display aesthetics if it gets too long, but keep full value internally
-            const MAX_DISPLAY_LENGTH = 9; // Adjust as needed
-            let displayValue = currentInput;
-
-            if (currentInput.includes('e')) { // Handle scientific notation
-                display.textContent = currentInput;
-                return;
+            if (ctaButton) {
+                ctaButton.addEventListener('click', () => {
+                    console.log('Whimsy embraced! Welcome to the magical world of Pink Cats!');
+                    alert('Whimsy embraced! Welcome to the magical world of Pink Cats!');
+                    // Optionally scroll to another section after clicking, e.g., the About section
+                    // document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
+                });
             }
-
-            if (currentInput.length > MAX_DISPLAY_LENGTH && !currentInput.includes('.')) {
-                // If a large integer, display in scientific notation or truncate
-                displayValue = parseFloat(currentInput).toPrecision(MAX_DISPLAY_LENGTH).replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.0*$/, '');
-            } else if (currentInput.length > MAX_DISPLAY_LENGTH && currentInput.includes('.')) {
-                // If a large decimal, try to fit by reducing precision
-                displayValue = parseFloat(currentInput).toFixed(MAX_DISPLAY_LENGTH - currentInput.indexOf('.') - 1);
-                // Remove trailing zeros and dot if it becomes integer after fix
-                displayValue = parseFloat(displayValue).toString();
-            }
-
-            // Ensure 'Error' or other messages are fully displayed
-            if (currentInput === "Error" || currentInput === "Infinity" || currentInput === "-Infinity") {
-                 displayValue = currentInput;
-            }
-
-            display.textContent = displayValue;
-        }
-
-        /** Appends a number or decimal point to the current input. */
-        function appendNumber(number) {
-            if (currentInput === "Error") { // Clear error state on new number input
-                currentInput = '0';
-                previousInput = '';
-                operator = null;
-                waitingForNewInput = false;
-            }
-
-            if (waitingForNewInput) {
-                currentInput = number === '.' ? '0.' : number; // Start with '0.' if decimal is first
-                waitingForNewInput = false;
-            } else {
-                if (number === '.' && currentInput.includes('.')) {
-                    return; // Prevent multiple decimal points
-                }
-                if (currentInput === '0' && number !== '.') {
-                    currentInput = number; // Replace initial '0' unless it's a decimal
-                } else {
-                    currentInput += number;
-                }
-            }
-            updateDisplay();
-        }
-
-        /** Sets the operator for the calculation. */
-        function chooseOperator(op) {
-            if (currentInput === '') return; // No input to operate on
-
-            if (previousInput !== '' && operator !== null && !waitingForNewInput) {
-                calculate(); // Chain operations: e.g., 5 + 3 + (new operator)
-            }
-
-            operator = op;
-            previousInput = currentInput;
-            waitingForNewInput = true; // Next number input will start a new currentInput
-            updateDisplay(); // Update display to show previousInput (or current if nothing changed yet)
-        }
-
-        /** Performs the calculation based on the stored operator and operands. */
-        function calculate() {
-            if (previousInput === '' || operator === null) {
-                return; // Nothing to calculate
-            }
-
-            let result;
-            const prev = parseFloat(previousInput);
-            const current = parseFloat(currentInput);
-
-            if (isNaN(prev) || isNaN(current)) {
-                currentInput = "Error";
-                updateDisplay();
-                return;
-            }
-
-            switch (operator) {
-                case '+':
-                    result = prev + current;
-                    break;
-                case '-':
-                    result = prev - current;
-                    break;
-                case '*':
-                    result = prev * current;
-                    break;
-                case '/':
-                    if (current === 0) {
-                        currentInput = "Error"; // Division by zero
-                        previousInput = '';
-                        operator = null;
-                        waitingForNewInput = true;
-                        updateDisplay();
-                        return;
-                    }
-                    result = prev / current;
-                    break;
-                default:
-                    return;
-            }
-            currentInput = String(result);
-            operator = null;
-            previousInput = '';
-            waitingForNewInput = true; // Ready for a new operation or number after result
-            updateDisplay();
-        }
-
-        /** Clears all calculator state. */
-        function clearAll() {
-            currentInput = '0';
-            previousInput = '';
-            operator = null;
-            waitingForNewInput = false;
-            updateDisplay();
-        }
-
-        /** Deletes the last character from the current input. */
-        function deleteLast() {
-            if (currentInput === "Error") {
-                clearAll(); // If in error state, clear everything
-                return;
-            }
-            if (currentInput === '0' && !waitingForNewInput) return; // Cannot delete initial zero
-
-            if (currentInput.length === 1 || (currentInput.length === 2 && currentInput.startsWith('-'))) {
-                currentInput = '0'; // If only one digit or '-X', reset to '0'
-            } else {
-                currentInput = currentInput.slice(0, -1);
-            }
-            updateDisplay();
-        }
-
-        // Add event listeners to all buttons
-        document.querySelectorAll('.button').forEach(button => {
-            button.addEventListener('click', () => {
-                if (button.classList.contains('number') || button.classList.contains('decimal')) {
-                    appendNumber(button.textContent);
-                } else if (button.classList.contains('operator')) {
-                    chooseOperator(button.textContent);
-                } else if (button.classList.contains('equals')) {
-                    calculate();
-                } else if (button.classList.contains('clear')) {
-                    clearAll();
-                } else if (button.classList.contains('backspace')) {
-                    deleteLast();
-                }
-            });
         });
     </script>
 </body>
