@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AxiomCalc</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23007bff' d='M21 4H3a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zm-1 14H4V6h16z'/%3E%3Cpath fill='%23007bff' d='M9 8h6v2H9zM9 11h6v2H9zM9 14h6v2H9z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <title>CalculEase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -14,223 +14,225 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #1a1a1a; /* Dark background */
-            color: #e0e0e0; /* Light text for dark theme */
-            overflow: hidden; /* Prevent scrolling if not needed */
+            background-color: #f0f2f5;
+            color: #333;
+            overflow: hidden; /* Prevents body scrollbar */
         }
 
         .calculator {
-            background-color: #2c2c2c; /* Darker background for calculator body */
+            background-color: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); /* Deeper shadow for dark theme */
-            overflow: hidden;
-            width: 320px; /* Fixed width for desktop */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 350px;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
 
-        .brand-header {
-            background-color: #0056b3; /* Deeper blue for brand */
-            color: #fff;
-            padding: 15px 20px;
-            font-size: 1.2em;
-            font-weight: 600;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Subtle white border */
+        .calculator-brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 20px;
             letter-spacing: 0.5px;
         }
 
         .display {
-            background-color: #111111; /* Very dark display background */
-            color: #ffffff;
+            width: 100%;
+            height: 80px;
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
             font-size: 3.5em;
-            padding: 25px 20px;
             text-align: right;
-            word-wrap: break-word;
-            word-break: break-all;
-            min-height: 100px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
+            color: #343a40;
             overflow: hidden;
-            border-bottom: 1px solid #080808; /* Darker border */
-            box-sizing: border-box;
-            line-height: 1.2;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.4); /* Adjusted shadow for contrast */
-        }
-
-        .display-text {
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
             white-space: nowrap;
+            text-overflow: clip;
+            box-sizing: border-box;
+            font-weight: 300;
         }
 
-        .buttons {
+        .buttons-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1px; /* Small gap to create subtle lines */
-            background-color: #222222; /* Dark background for the lines */
-            padding-top: 1px; /* Top line for the first row */
+            gap: 15px;
+            width: 100%;
         }
 
-        .button {
-            background-color: #3a3a3a; /* Dark button background */
-            border: none;
-            padding: 20px;
+        .buttons-grid button {
+            width: 100%;
+            height: 70px;
             font-size: 1.8em;
+            border: none;
+            border-radius: 35px;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.05s ease;
+            transition: all 0.2s ease;
+            outline: none;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 500;
-            user-select: none;
-            box-sizing: border-box;
-            color: #ffffff; /* Light text for buttons */
+            user-select: none; /* Prevent text selection on buttons */
         }
 
-        .button:hover {
-            background-color: #4a4a4a; /* Slightly lighter on hover */
-            transform: translateY(-1px);
+        .buttons-grid button:active {
+            transform: scale(0.95);
         }
 
-        .button:active {
-            background-color: #303030; /* Slightly darker on active */
-            transform: translateY(0);
+        /* Number and Decimal Buttons */
+        .buttons-grid button.number,
+        .buttons-grid button.decimal {
+            background-color: #f8f9fa;
+            color: #495057;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .buttons-grid button.number:hover,
+        .buttons-grid button.decimal:hover {
+            background-color: #e2e6ea;
         }
 
-        /* Operator buttons */
-        .button.operator {
-            background-color: #d17800; /* Deeper orange */
+        /* Operator Buttons */
+        .buttons-grid button.operator {
+            background-color: #4a90e2; /* Blue */
             color: #ffffff;
             font-weight: bold;
         }
-
-        .button.operator:hover {
-            background-color: #b86900;
+        .buttons-grid button.operator:hover {
+            background-color: #357ABD;
         }
 
-        .button.operator:active {
-            background-color: #9f5b00;
-        }
-
-        /* Equals button */
-        .button.equals {
-            background-color: #0056b3; /* Matching brand blue */
-            color: #ffffff;
-            grid-column: span 2;
-            font-weight: bold;
-        }
-
-        .button.equals:hover {
-            background-color: #00479e;
-        }
-
-        .button.equals:active {
-            background-color: #003a83;
-        }
-
-        /* Special function buttons (AC, DEL, %) */
-        .button.func {
-            background-color: #555555; /* Medium dark grey */
+        /* Clear and Delete Buttons */
+        .buttons-grid button.clear,
+        .buttons-grid button.delete {
+            background-color: #adb5bd; /* Gray */
             color: #ffffff;
         }
-
-        .button.func:hover {
-            background-color: #6a6a6a;
+        .buttons-grid button.clear:hover,
+        .buttons-grid button.delete:hover {
+            background-color: #8c9298;
         }
 
-        .button.func:active {
-            background-color: #4a4a4a;
-        }
-
-        /* Zero button for span */
-        .button[data-number="0"] {
+        /* Equals Button */
+        .buttons-grid button.equals {
+            background-color: #28a745; /* Green */
+            color: #ffffff;
             grid-column: span 2;
-            justify-content: flex-start;
-            padding-left: 35px; /* Adjust padding for visual alignment */
+            border-radius: 35px;
+        }
+        .buttons-grid button.equals:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
-
     <div class="calculator">
-        <div class="brand-header">AxiomCalc</div>
-        <div class="display">
-            <div class="display-text" id="display">0</div>
-        </div>
-        <div class="buttons">
-            <button class="button func" data-action="clear">AC</button>
-            <button class="button func" data-action="delete">DEL</button>
-            <button class="button func" data-action="percent">%</button>
-            <button class="button operator" data-operator="divide">÷</button>
+        <div class="calculator-brand">CalculEase</div>
+        <input type="text" class="display" value="0" readonly>
+        <div class="buttons-grid">
+            <button class="clear" data-type="clear">C</button>
+            <button class="delete" data-type="delete"><i class="fas fa-backspace"></i></button>
+            <button class="operator" data-type="operator" data-value="%">&percnt;</button>
+            <button class="operator" data-type="operator" data-value="/">&divide;</button>
 
-            <button class="button" data-number="7">7</button>
-            <button class="button" data-number="8">8</button>
-            <button class="button" data-number="9">9</button>
-            <button class="button operator" data-operator="multiply">×</button>
+            <button class="number" data-type="number" data-value="7">7</button>
+            <button class="number" data-type="number" data-value="8">8</button>
+            <button class="number" data-type="number" data-value="9">9</button>
+            <button class="operator" data-type="operator" data-value="*">&times;</button>
 
-            <button class="button" data-number="4">4</button>
-            <button class="button" data-number="5">5</button>
-            <button class="button" data-number="6">6</button>
-            <button class="button operator" data-operator="subtract">-</button>
+            <button class="number" data-type="number" data-value="4">4</button>
+            <button class="number" data-type="number" data-value="5">5</button>
+            <button class="number" data-type="number" data-value="6">6</button>
+            <button class="operator" data-type="operator" data-value="-">&minus;</button>
 
-            <button class="button" data-number="1">1</button>
-            <button class="button" data-number="2">2</button>
-            <button class="button" data-number="3">3</button>
-            <button class="button operator" data-operator="add">+</button>
+            <button class="number" data-type="number" data-value="1">1</button>
+            <button class="number" data-type="number" data-value="2">2</button>
+            <button class="number" data-type="number" data-value="3">3</button>
+            <button class="operator" data-type="operator" data-value="+">&plus;</button>
 
-            <button class="button" data-number="0">0</button>
-            <button class="button" data-action="decimal">.</button>
-            <button class="button equals" data-action="equals">=</button>
+            <button class="number" data-type="number" data-value="0">0</button>
+            <button class="decimal" data-type="decimal" data-value=".">.</button>
+            <button class="equals" data-type="equals">=</button>
         </div>
     </div>
 
     <script>
-        const display = document.getElementById('display');
-        const buttons = document.querySelectorAll('.button');
-
-        let currentInput = '0';
+        const display = document.querySelector('.display');
+        let currentInput = '';
         let previousInput = '';
         let operator = null;
-        let shouldResetDisplay = false; // Flag to clear display after an operation or equals
+        let shouldResetDisplay = false; // Flag to indicate if display should be reset for a new number
 
-        function updateDisplay() {
-            display.textContent = currentInput;
-            // Adjust font size if the number is too long
-            if (currentInput.length > 9) {
-                display.style.fontSize = '2.5em';
-            } else if (currentInput.length > 6) {
-                display.style.fontSize = '3em';
+        function clear() {
+            currentInput = '';
+            previousInput = '';
+            operator = null;
+            shouldResetDisplay = false;
+            display.value = '0';
+        }
+
+        function deleteLast() {
+            if (display.value === '0' && currentInput === '') return; // Don't delete from initial 0 or empty input
+
+            if (shouldResetDisplay) { // If an operation just finished, delete should clear current result and allow new input
+                currentInput = '';
+                shouldResetDisplay = false;
+                display.value = '0';
+                return;
+            }
+
+            currentInput = currentInput.slice(0, -1);
+            if (currentInput === '') {
+                display.value = '0'; // If nothing left, show '0'
             } else {
-                display.style.fontSize = '3.5em';
+                display.value = currentInput;
             }
         }
 
         function appendNumber(number) {
+            if (display.value === 'Error' || display.value === 'NaN' || display.value === 'Infinity') {
+                clear(); // Clear previous error state
+            }
             if (shouldResetDisplay) {
                 currentInput = number;
                 shouldResetDisplay = false;
-            } else if (currentInput === '0' || currentInput === '-0') {
-                currentInput = number; // Replace initial '0'
             } else {
-                currentInput += number;
+                // Prevent multiple leading zeros unless it's a decimal
+                if (number === '0' && currentInput === '0' && !currentInput.includes('.')) {
+                    return;
+                }
+                // If starting with 0 and not a decimal, replace 0 with new digit
+                if (currentInput === '0' && number !== '.') {
+                    currentInput = number;
+                } else {
+                    currentInput += number;
+                }
             }
-            updateDisplay();
+            display.value = currentInput;
         }
 
-        function chooseOperation(op) {
-            if (currentInput === '' && previousInput === '') return;
-            if (previousInput !== '' && !shouldResetDisplay) {
-                compute();
+        function chooseOperator(selectedOperator) {
+            if (currentInput === '' && previousInput === '') return; // No input yet
+
+            if (currentInput === '' && previousInput !== '') { // Operator changed without new number
+                operator = selectedOperator;
+                return;
             }
-            operator = op;
-            previousInput = currentInput;
-            shouldResetDisplay = true;
+
+            if (previousInput !== '') {
+                calculate(); // Calculate result of previous operation if one exists
+            }
+            operator = selectedOperator;
+            previousInput = display.value; // Store current display value as previous input
+            currentInput = ''; // Clear current input for next number
+            shouldResetDisplay = true; // Next number entered should replace current display
         }
 
-        function compute() {
+        function calculate() {
             let computation;
             const prev = parseFloat(previousInput);
             const current = parseFloat(currentInput);
@@ -238,110 +240,76 @@
             if (isNaN(prev) || isNaN(current)) return;
 
             switch (operator) {
-                case 'add':
+                case '+':
                     computation = prev + current;
                     break;
-                case 'subtract':
+                case '-':
                     computation = prev - current;
                     break;
-                case 'multiply':
+                case '*':
                     computation = prev * current;
                     break;
-                case 'divide':
+                case '/':
                     if (current === 0) {
-                        currentInput = 'Error';
-                        shouldResetDisplay = true;
+                        display.value = 'Error'; // Division by zero
+                        currentInput = ''; // Reset state for error
+                        previousInput = '';
+                        operator = null;
                         return;
                     }
                     computation = prev / current;
                     break;
+                case '%': // Modulo operator
+                    computation = prev % current;
+                    break;
                 default:
                     return;
             }
-            // Limit to 10 decimal places to prevent floating point issues and long numbers
-            currentInput = parseFloat(computation.toFixed(10)).toString();
+
+            // Handle potential floating point inaccuracies and format for display
+            display.value = parseFloat(computation.toFixed(10)).toString();
+            currentInput = display.value;
             operator = null;
             previousInput = '';
-        }
-
-        function clearAll() {
-            currentInput = '0';
-            previousInput = '';
-            operator = null;
-            shouldResetDisplay = false;
-            updateDisplay();
-        }
-
-        function deleteLast() {
-            if (currentInput.length === 1 || currentInput === 'Error') {
-                currentInput = '0';
-            } else {
-                currentInput = currentInput.slice(0, -1);
-            }
-            updateDisplay();
+            shouldResetDisplay = true; // After calculation, next number should clear display
         }
 
         function appendDecimal() {
-            if (shouldResetDisplay) {
+            if (display.value === 'Error' || display.value === 'NaN' || display.value === 'Infinity') {
+                clear();
+            }
+            if (shouldResetDisplay) { // If display should be reset, start with "0."
                 currentInput = '0.';
                 shouldResetDisplay = false;
-                updateDisplay();
-                return;
+            } else if (!currentInput.includes('.')) {
+                currentInput = currentInput === '' ? '0.' : currentInput + '.';
             }
-            if (!currentInput.includes('.')) {
-                currentInput += '.';
-            }
-            updateDisplay();
+            display.value = currentInput;
         }
 
-        function calculatePercentage() {
-            let num = parseFloat(currentInput);
-            if (isNaN(num)) return;
-
-            if (operator === null) { // If no ongoing operation, just convert to percentage of 1
-                currentInput = (num / 100).toString();
-            } else { // If there's an operation, apply percentage to the current input relative to previousInput
-                const prev = parseFloat(previousInput);
-                if (isNaN(prev)) return;
-                switch (operator) {
-                    case 'add':
-                    case 'subtract':
-                        currentInput = (prev * (num / 100)).toString();
-                        break;
-                    case 'multiply':
-                    case 'divide':
-                        currentInput = (num / 100).toString();
-                        break;
-                }
-            }
-            updateDisplay();
-            shouldResetDisplay = true; // After percentage, treat next number as new input
-        }
-
-        buttons.forEach(button => {
+        document.querySelectorAll('.buttons-grid button').forEach(button => {
             button.addEventListener('click', () => {
-                if (button.dataset.number) {
-                    appendNumber(button.dataset.number);
-                } else if (button.dataset.operator) {
-                    chooseOperation(button.dataset.operator);
-                } else if (button.dataset.action === 'equals') {
-                    compute();
-                    shouldResetDisplay = true;
-                    updateDisplay();
-                } else if (button.dataset.action === 'clear') {
-                    clearAll();
-                } else if (button.dataset.action === 'delete') {
+                const type = button.dataset.type;
+                const value = button.dataset.value;
+
+                if (type === 'number') {
+                    appendNumber(value);
+                } else if (type === 'operator') {
+                    chooseOperator(value);
+                } else if (type === 'equals') {
+                    calculate();
+                } else if (type === 'clear') {
+                    clear();
+                } else if (type === 'delete') {
                     deleteLast();
-                } else if (button.dataset.action === 'decimal') {
+                } else if (type === 'decimal') {
                     appendDecimal();
-                } else if (button.dataset.action === 'percent') {
-                    calculatePercentage();
                 }
             });
         });
 
-        // Initialize display
-        updateDisplay();
+        // Initialize display on load
+        clear();
     </script>
 </body>
 </html>
