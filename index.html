@@ -3,321 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaCalc Pro</title>
+    <title>AetherFeedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
         :root {
-            --bg-color: #e0e0e0;
-            --calc-bg: #f8f8f8;
-            --display-bg: #ffffff;
-            --display-text: #333333;
-            --button-bg-light: #ececec;
-            --button-text-dark: #333333;
-            --button-bg-dark: #f0f0f0;
-            --operator-bg: #f79234;
-            --operator-text: #ffffff;
-            --equals-bg: #3498db;
-            --equals-text: #ffffff;
-            --function-bg: #d0d0d0;
-            --border-radius: 12px;
-            --gap-size: 12px;
-            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+            --primary-color: #6a0dad; /* A deep purple */
+            --secondary-color: #e0b0ff; /* Lighter purple */
+            --text-color: #333;
+            --light-text-color: #666;
+            --background-color: #f7f9fc;
+            --card-background: #ffffff;
+            --border-color: #ddd;
+            --focus-color: #8a2be2; /* Brighter purple for focus */
+            --success-color: #28a745;
+            --error-color: #dc3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden; /* Prevent body scroll if content doesn't exceed viewport */
-            color: var(--button-text-dark);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+            overflow-y: auto; /* Enable scrolling if content overflows */
         }
 
-        .calculator {
-            background-color: var(--calc-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light);
-            padding: var(--gap-size);
-            width: 340px; /* Standard width for a mobile-like calculator */
-            display: flex;
-            flex-direction: column;
-            gap: var(--gap-size);
+        .form-container {
+            background-color: var(--card-background);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+            border: 1px solid var(--border-color);
         }
 
-        .display {
-            background-color: var(--display-bg);
-            color: var(--display-text);
-            font-size: 2.8em;
-            padding: 20px 15px;
-            border-radius: calc(var(--border-radius) / 2);
-            text-align: right;
-            overflow-x: auto;
-            white-space: nowrap;
-            letter-spacing: -1px;
-            min-height: 70px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
-            font-weight: 300;
-        }
-
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--gap-size);
-        }
-
-        .button {
-            background-color: var(--button-bg-light);
-            color: var(--button-text-dark);
-            font-size: 1.6em;
-            font-weight: 500;
-            padding: 20px 0;
-            border: none;
-            border-radius: calc(var(--border-radius) / 2);
-            cursor: pointer;
-            outline: none;
-            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            user-select: none;
+            gap: 10px;
+            font-weight: 700;
         }
 
-        .button:hover {
-            background-color: var(--button-bg-dark);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        h1 .icon {
+            color: var(--secondary-color);
+            font-size: 1.1em;
         }
 
-        .button:active {
-            transform: translateY(1px);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-            background-color: var(--button-bg-dark); /* Slightly darker on active */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
         }
 
-        /* Specific button styles */
-        .button.function-button {
-            background-color: var(--function-bg);
-            font-weight: 400;
-        }
-
-        .button.function-button:hover {
-            background-color: #c0c0c0;
-        }
-
-        .button.operator {
-            background-color: var(--operator-bg);
-            color: var(--operator-text);
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            color: var(--light-text-color);
             font-weight: 600;
         }
 
-        .button.operator:hover {
-            background-color: #e6802e; /* Slightly darker orange */
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+            -webkit-appearance: none; /* For consistent styling across browsers */
         }
 
-        .button.equals {
-            background-color: var(--equals-bg);
-            color: var(--equals-text);
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        textarea::placeholder {
+            color: #b0b0b0;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: var(--focus-color);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            max-height: 300px;
+            line-height: 1.6;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
             font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            outline: none;
+            letter-spacing: 0.5px;
         }
 
-        .button.equals:hover {
-            background-color: #2a81c4; /* Slightly darker blue */
+        button:hover {
+            background-color: var(--focus-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(106, 13, 173, 0.3);
         }
 
-        .button.span-two {
-            grid-column: span 2;
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(106, 13, 173, 0.2);
+        }
+
+        #message-area {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            min-height: 20px; /* Prevent layout shift when message appears */
+        }
+
+        #message-area.success {
+            background-color: #d4edda;
+            color: var(--success-color);
+            border: 1px solid #c3e6cb;
+            opacity: 1;
+        }
+
+        #message-area.error {
+            background-color: #f8d7da;
+            color: var(--error-color);
+            border: 1px solid #f5c6cb;
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <div class="calculator">
-        <div class="display" id="display">0</div>
-        <div class="buttons">
-            <button class="button function-button" data-action="clear">AC</button>
-            <button class="button function-button" data-action="toggle-sign">±</button>
-            <button class="button function-button" data-action="percentage">%</button>
-            <button class="button operator" data-action="operator" data-value="/">÷</button>
-
-            <button class="button" data-action="number" data-value="7">7</button>
-            <button class="button" data-action="number" data-value="8">8</button>
-            <button class="button" data-action="number" data-value="9">9</button>
-            <button class="button operator" data-action="operator" data-value="*">×</button>
-
-            <button class="button" data-action="number" data-value="4">4</button>
-            <button class="button" data-action="number" data-value="5">5</button>
-            <button class="button" data-action="number" data-value="6">6</button>
-            <button class="button operator" data-action="operator" data-value="-">−</button>
-
-            <button class="button" data-action="number" data-value="1">1</button>
-            <button class="button" data-action="number" data-value="2">2</button>
-            <button class="button" data-action="number" data-value="3">3</button>
-            <button class="button operator" data-action="operator" data-value="+">+</button>
-
-            <button class="button span-two" data-action="number" data-value="0">0</button>
-            <button class="button" data-action="decimal" data-value=".">.</button>
-            <button class="button equals" data-action="equals">=</button>
-        </div>
+    <div class="form-container">
+        <h1><i class="fas fa-comment-dots icon"></i> AetherFeedback</h1>
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Your Email</label>
+                <input type="email" id="email" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" placeholder="Type your feedback here..." required></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
+        <div id="message-area"></div>
     </div>
 
     <script>
-        const display = document.getElementById('display');
-        const buttons = document.querySelector('.buttons');
+        document.addEventListener('DOMContentLoaded', () => {
+            const feedbackForm = document.getElementById('feedbackForm');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const messageInput = document.getElementById('message');
+            const messageArea = document.getElementById('message-area');
 
-        let currentInput = '0';
-        let previousInput = '';
-        let operator = null;
-        let awaitingNextOperand = false; // True when an operator is pressed, awaiting the next number
+            // Function to display messages
+            const showMessage = (message, type) => {
+                messageArea.textContent = message;
+                messageArea.className = ''; // Clear existing classes
+                messageArea.classList.add(type);
+                // Optionally hide message after a few seconds
+                setTimeout(() => {
+                    messageArea.classList.remove(type);
+                    messageArea.textContent = '';
+                }, 5000); // Message disappears after 5 seconds
+            };
 
-        function updateDisplay() {
-            display.textContent = currentInput;
-            // Adjust font size for long numbers
-            if (currentInput.length > 9) {
-                display.style.fontSize = '2.2em';
-            } else if (currentInput.length > 12) {
-                 display.style.fontSize = '1.8em';
-            }
-            else {
-                display.style.fontSize = '2.8em';
-            }
-        }
+            // Basic email validation regex
+            const isValidEmail = (email) => {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            };
 
-        function clearCalculator() {
-            currentInput = '0';
-            previousInput = '';
-            operator = null;
-            awaitingNextOperand = false;
-            updateDisplay();
-        }
+            feedbackForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent default form submission
 
-        function appendNumber(number) {
-            if (currentInput.includes('Error')) { // Clear error message before new input
-                currentInput = '0';
-            }
-            if (awaitingNextOperand) {
-                currentInput = number;
-                awaitingNextOperand = false;
-            } else {
-                if (currentInput === '0' && number !== '.') {
-                    currentInput = number;
-                } else if (number === '.' && currentInput.includes('.')) {
-                    return; // Prevent multiple decimals
-                } else {
-                    currentInput += number;
-                }
-            }
-            updateDisplay();
-        }
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                const message = messageInput.value.trim();
 
-        function chooseOperator(nextOperator) {
-            if (currentInput === '' || currentInput.includes('Error')) return;
-
-            if (previousInput !== '' && operator !== null && !awaitingNextOperand) {
-                calculate(); // Calculate previous operation if chaining operators
-            }
-
-            operator = nextOperator;
-            previousInput = currentInput;
-            awaitingNextOperand = true;
-            updateDisplay(); // Show current input, before it becomes previous for next display
-        }
-
-        function calculate() {
-            let computation;
-            const prev = parseFloat(previousInput);
-            const current = parseFloat(currentInput);
-
-            if (isNaN(prev) || isNaN(current)) return;
-
-            switch (operator) {
-                case '+':
-                    computation = prev + current;
-                    break;
-                case '-':
-                    computation = prev - current;
-                    break;
-                case '*':
-                    computation = prev * current;
-                    break;
-                case '/':
-                    if (current === 0) {
-                        computation = "Error"; // Handle division by zero
-                    } else {
-                        computation = prev / current;
-                    }
-                    break;
-                default:
+                if (!name || !email || !message) {
+                    showMessage('Please fill in all fields.', 'error');
                     return;
-            }
-
-            if (typeof computation === 'number') {
-                // Round to avoid floating point issues, limit to reasonable precision
-                computation = parseFloat(computation.toFixed(10));
-                if (Math.abs(computation) > 999999999999999) { // Check for very large/small numbers
-                    computation = computation.toExponential(5);
                 }
-            }
-            
-            currentInput = computation.toString();
-            operator = null;
-            previousInput = '';
-            awaitingNextOperand = true; // Ready for new operation or number input
-            updateDisplay();
-        }
 
-        function toggleSign() {
-            if (currentInput === '0' || currentInput === '' || currentInput.includes('Error')) return;
-            currentInput = (parseFloat(currentInput) * -1).toString();
-            updateDisplay();
-        }
+                if (!isValidEmail(email)) {
+                    showMessage('Please enter a valid email address.', 'error');
+                    return;
+                }
 
-        function calculatePercentage() {
-            if (currentInput === '' || currentInput.includes('Error')) return;
-            currentInput = (parseFloat(currentInput) / 100).toString();
-            updateDisplay();
-        }
+                // Simulate form submission success
+                console.log('Form Submitted:');
+                console.log('Name:', name);
+                console.log('Email:', email);
+                console.log('Message:', message);
 
-        buttons.addEventListener('click', e => {
-            if (!e.target.matches('.button')) return;
+                showMessage('Thank you for your feedback! We appreciate it.', 'success');
 
-            const { action, value } = e.target.dataset;
-
-            switch (action) {
-                case 'number':
-                    appendNumber(value);
-                    break;
-                case 'decimal':
-                    appendNumber('.');
-                    break;
-                case 'operator':
-                    chooseOperator(value);
-                    break;
-                case 'equals':
-                    calculate();
-                    break;
-                case 'clear':
-                    clearCalculator();
-                    break;
-                case 'toggle-sign':
-                    toggleSign();
-                    break;
-                case 'percentage':
-                    calculatePercentage();
-                    break;
-            }
+                // Clear the form fields
+                nameInput.value = '';
+                emailInput.value = '';
+                messageInput.value = '';
+            });
         });
-
-        // Initialize display
-        document.addEventListener('DOMContentLoaded', updateDisplay);
     </script>
 </body>
 </html>
