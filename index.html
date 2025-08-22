@@ -3,221 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraFlow - Contact Us</title>
+    <title>Quantify Calculator</title>
     <style>
-        :root {
-            --primary-color: #007bff;
-            --primary-hover-color: #0056b3;
-            --background-color: #f8f9fa;
-            --card-background: #ffffff;
-            --text-color: #343a40;
-            --border-color: #ced4da;
-            --success-color: #28a745;
-            --error-color: #dc3545;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            background-color: #f0f2f5; /* Light gray background */
+            overflow: hidden; /* Prevent body scrollbars */
         }
 
-        .contact-container {
-            background-color: var(--card-background);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px var(--shadow-color);
-            max-width: 500px;
-            width: 90%;
-            box-sizing: border-box;
-            text-align: center;
+        .calculator {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 320px; /* Fixed width for desktop */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 2em;
-            font-weight: 600;
+        .calculator-display {
+            background-color: #2c3e50; /* Darker display background */
+            color: #ecf0f1; /* Light text color */
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: right;
+            font-size: 3.2em; /* Larger font for display */
+            font-weight: 300;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: clip; /* Hide overflowing text */
+            min-height: 70px; /* Ensure sufficient height */
+            display: flex; /* Use flexbox for vertical alignment */
+            align-items: flex-end; /* Align text to bottom */
+            justify-content: flex-end; /* Align text to right */
         }
 
-        p {
-            margin-bottom: 30px;
-            color: #6c757d;
-            font-size: 1.05em;
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-color);
-            font-size: 0.95em;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 1em;
-            color: var(--text-color);
-            box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        textarea:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-            outline: none;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        button {
-            display: inline-block;
-            width: 100%;
-            padding: 15px 25px;
-            background-color: var(--primary-color);
-            color: white;
+        .calculator-buttons button {
+            background-color: #ecf0f1; /* Light gray buttons */
+            color: #2c3e50; /* Dark text on buttons */
             border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
+            border-radius: 12px;
+            padding: 20px 0; /* Vertical padding only, width is by grid */
+            font-size: 1.8em;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 5px var(--shadow-color);
-        }
-
-        button:hover {
-            background-color: var(--primary-hover-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px var(--shadow-color);
-        }
-
-        button:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 3px var(--shadow-color);
-        }
-
-        .message-box {
-            margin-top: 25px;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1em;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-weight: 500;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .message-box.show {
-            opacity: 1;
-            transform: translateY(0);
+        .calculator-buttons button:hover {
+            background-color: #dbe2e9; /* Slightly darker on hover */
         }
 
-        .message-box.success {
-            background-color: #d4edda;
-            color: var(--success-color);
-            border: 1px solid #c3e6cb;
+        .calculator-buttons button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .message-box.error {
-            background-color: #f8d7da;
-            color: var(--error-color);
-            border: 1px solid #f5c6cb;
+        /* Operator buttons */
+        .calculator-buttons button.operator,
+        .calculator-buttons button.equals {
+            background-color: #3498db; /* Blue for operators and equals */
+            color: #ffffff;
+        }
+
+        .calculator-buttons button.operator:hover,
+        .calculator-buttons button.equals:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        .calculator-buttons button.clear,
+        .calculator-buttons button.delete {
+            background-color: #e74c3c; /* Red for clear/delete */
+            color: #ffffff;
+        }
+
+        .calculator-buttons button.clear:hover,
+        .calculator-buttons button.delete:hover {
+            background-color: #c0392b; /* Darker red on hover */
+        }
+
+        /* Special button spans */
+        .calculator-buttons button.span-2-columns {
+            grid-column: span 2;
+        }
+        .calculator-buttons button.span-2-rows {
+            grid-row: span 2;
         }
     </style>
 </head>
 <body>
-    <div class="contact-container">
-        <h1>Contact AuraFlow</h1>
-        <p>We'd love to hear from you! Please fill out the form below to get in touch with our team.</p>
-        <form id="contactForm">
-            <div class="form-group">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" required placeholder="John Doe" autocomplete="name">
-            </div>
-            <div class="form-group">
-                <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" required placeholder="name@example.com" autocomplete="email">
-            </div>
-            <div class="form-group">
-                <label for="message">Your Message:</label>
-                <textarea id="message" name="message" required placeholder="Tell us how we can help..."></textarea>
-            </div>
-            <button type="submit">Send Message</button>
-        </form>
-        <div id="formMessage" class="message-box" role="alert"></div>
+    <div class="calculator">
+        <div class="calculator-display" data-current-operand>0</div>
+        <div class="calculator-buttons">
+            <button class="clear">C</button>
+            <button class="delete">DEL</button>
+            <button class="operator" data-operation="/">/</button>
+            <button class="operator" data-operation="*">*</button>
+            <button data-number>7</button>
+            <button data-number>8</button>
+            <button data-number>9</button>
+            <button class="operator" data-operation="-">-</button>
+            <button data-number>4</button>
+            <button data-number>5</button>
+            <button data-number>6</button>
+            <button class="operator" data-operation="+">+</button>
+            <button data-number>1</button>
+            <button data-number>2</button>
+            <button data-number>3</button>
+            <button class="equals span-2-rows" data-equals>=</button>
+            <button data-number class="span-2-columns">0</button>
+            <button data-number>.</button>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const contactForm = document.getElementById('contactForm');
-            const formMessage = document.getElementById('formMessage');
-
-            contactForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                // Clear previous messages
-                formMessage.classList.remove('show', 'success', 'error');
-                formMessage.textContent = '';
-
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const message = document.getElementById('message').value.trim();
-
-                // Basic validation
-                if (!name || !email || !message) {
-                    showMessage('All fields are required.', 'error');
-                    return;
-                }
-
-                // Email format validation (simple regex)
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(email)) {
-                    showMessage('Please enter a valid email address.', 'error');
-                    return;
-                }
-
-                // Simulate form submission
-                console.log('Form Submitted:');
-                console.log(`Name: ${name}`);
-                console.log(`Email: ${email}`);
-                console.log(`Message: ${message}`);
-
-                // Display success message
-                showMessage('Thank you for your message! We will get back to you soon.', 'success');
-
-                // Clear the form fields
-                contactForm.reset();
-            });
-
-            function showMessage(text, type) {
-                formMessage.textContent = text;
-                formMessage.classList.add('show', type);
+        class Calculator {
+            constructor(currentOperandTextElement) {
+                this.currentOperandTextElement = currentOperandTextElement;
+                this.clear();
             }
+
+            clear() {
+                this.currentOperand = '0';
+                this.previousOperand = '';
+                this.operation = undefined;
+                this.shouldResetDisplay = false; // Flag to clear display after operation or equals
+            }
+
+            delete() {
+                if (this.currentOperand === '0' || this.currentOperand.length === 1) {
+                    this.currentOperand = '0';
+                } else {
+                    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+                }
+            }
+
+            appendNumber(number) {
+                if (this.shouldResetDisplay) {
+                    this.currentOperand = number;
+                    this.shouldResetDisplay = false;
+                    return;
+                }
+                if (number === '.' && this.currentOperand.includes('.')) return;
+                if (this.currentOperand === '0' && number !== '.') {
+                    this.currentOperand = number.toString();
+                } else {
+                    this.currentOperand = this.currentOperand.toString() + number.toString();
+                }
+            }
+
+            chooseOperation(operation) {
+                if (this.currentOperand === '') return; // No number to operate on
+                if (this.previousOperand !== '') {
+                    this.compute(); // If there's a previous operation, compute it
+                }
+                this.operation = operation;
+                this.previousOperand = this.currentOperand;
+                this.currentOperand = ''; // Clear current operand for next number input
+                this.shouldResetDisplay = true; // Flag to clear display for next number
+            }
+
+            compute() {
+                let computation;
+                const prev = parseFloat(this.previousOperand);
+                const current = parseFloat(this.currentOperand);
+                if (isNaN(prev) || isNaN(current)) return;
+
+                switch (this.operation) {
+                    case '+':
+                        computation = prev + current;
+                        break;
+                    case '-':
+                        computation = prev - current;
+                        break;
+                    case '*':
+                        computation = prev * current;
+                        break;
+                    case '/':
+                        if (current === 0) {
+                            alert("Cannot divide by zero!");
+                            this.clear();
+                            return;
+                        }
+                        computation = prev / current;
+                        break;
+                    default:
+                        return;
+                }
+                // Handle floating point precision issues for common operations
+                computation = parseFloat(computation.toFixed(10));
+                this.currentOperand = computation;
+                this.operation = undefined;
+                this.previousOperand = '';
+                this.shouldResetDisplay = true; // After computation, reset display for new number
+            }
+
+            getDisplayNumber(number) {
+                const stringNumber = number.toString();
+                const integerDigits = parseFloat(stringNumber.split('.')[0]);
+                const decimalDigits = stringNumber.split('.')[1];
+                let integerDisplay;
+                if (isNaN(integerDigits)) {
+                    integerDisplay = '';
+                } else {
+                    integerDisplay = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(integerDigits);
+                }
+                if (decimalDigits != null) {
+                    return `${integerDisplay}.${decimalDigits}`;
+                } else {
+                    return integerDisplay;
+                }
+            }
+
+            updateDisplay() {
+                this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
+            }
+        }
+
+        const numberButtons = document.querySelectorAll('[data-number]');
+        const operationButtons = document.querySelectorAll('[data-operation]');
+        const equalsButton = document.querySelector('[data-equals]');
+        const deleteButton = document.querySelector('.delete');
+        const clearButton = document.querySelector('.clear');
+        const currentOperandTextElement = document.querySelector('[data-current-operand]');
+
+        const calculator = new Calculator(currentOperandTextElement);
+
+        numberButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                calculator.appendNumber(button.innerText);
+                calculator.updateDisplay();
+            });
+        });
+
+        operationButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                calculator.chooseOperation(button.innerText);
+                calculator.updateDisplay(); // Update display to show previous operand or empty if just started new operation
+            });
+        });
+
+        equalsButton.addEventListener('click', button => {
+            calculator.compute();
+            calculator.updateDisplay();
+        });
+
+        clearButton.addEventListener('click', button => {
+            calculator.clear();
+            calculator.updateDisplay();
+        });
+
+        deleteButton.addEventListener('click', button => {
+            calculator.delete();
+            calculator.updateDisplay();
         });
     </script>
 </body>
